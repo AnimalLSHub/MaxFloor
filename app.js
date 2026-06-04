@@ -305,7 +305,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initialize/Load DB
     function loadDB() {
-        const stored = localStorage.getItem('floortech_db');
+        const stored = localStorage.getItem('maxfloors_db') || localStorage.getItem('floortech_db');
         if (stored) {
             try {
                 db = JSON.parse(stored);
@@ -430,7 +430,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 "มานะ อดทน"
             ];
         }
-        localStorage.setItem('floortech_db', JSON.stringify(db));
+        localStorage.setItem('maxfloors_db', JSON.stringify(db));
         if (render) {
             updateDashboardMetrics();
             renderActiveTab();
@@ -1408,7 +1408,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         const timestamp = new Date().toISOString().slice(0, 10);
         dlAnchorElem.setAttribute("href", dataStr);
-        dlAnchorElem.setAttribute("download", `floortech_backup_${timestamp}.json`);
+        dlAnchorElem.setAttribute("download", `maxfloors_backup_${timestamp}.json`);
         dlAnchorElem.click();
     });
 
@@ -2103,7 +2103,7 @@ document.addEventListener('DOMContentLoaded', () => {
         csv += `จำนวนบันทึกงานรายวันทั้งหมด,${db.logs.length}\n`;
         csv += `จำนวนปัญหาทั้งหมดที่พบ,${db.issues.length}\n`;
         csv += `จำนวนช่าง/พนักงานในระบบ,${db.workers.length}\n`;
-        downloadCSV("floortech_database_summary.csv", csv);
+        downloadCSV("maxfloors_database_summary.csv", csv);
     }
 
     function exportTabToJPG(tabId) {
