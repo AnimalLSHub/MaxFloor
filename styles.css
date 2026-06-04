@@ -377,6 +377,36 @@ body {
     color: var(--accent);
 }
 
+.proj-metric-card {
+    background: linear-gradient(135deg, #f0f9ff, #e0f2fe) !important;
+    border: 1.5px solid #bae6fd !important;
+}
+.proj-metric-card .metric-info h3 {
+    color: #0369a1 !important;
+}
+.proj-metric-card .metric-info .value {
+    color: #0369a1 !important;
+}
+.proj-metric-card .metric-icon {
+    background: #bae6fd !important;
+    color: #0284c7 !important;
+}
+
+.room-metric-card {
+    background: linear-gradient(135deg, #f5f3ff, #ede9fe) !important;
+    border: 1.5px solid #ddd6fe !important;
+}
+.room-metric-card .metric-info h3 {
+    color: #6b21a8 !important;
+}
+.room-metric-card .metric-info .value {
+    color: #6b21a8 !important;
+}
+.room-metric-card .metric-icon {
+    background: #ddd6fe !important;
+    color: #9333ea !important;
+}
+
 /* Table Style */
 .table-container {
     width: 100%;
@@ -978,8 +1008,8 @@ tr:hover td {
 .activity-item {
     background: var(--bg-card);
     border: 1px solid var(--border-color);
-    border-radius: var(--border-radius);
-    padding: 16px;
+    border-radius: 8px;
+    padding: 8px 12px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -1011,12 +1041,12 @@ tr:hover td {
 
 .activity-title {
     font-weight: 600;
-    font-size: 14px;
+    font-size: 13px;
     color: var(--text-primary);
 }
 
 .activity-subtitle {
-    font-size: 12px;
+    font-size: 11px;
     color: var(--text-secondary);
 }
 
@@ -1024,9 +1054,9 @@ tr:hover td {
     font-size: 12px;
     color: var(--text-primary);
     background: #f8fafc;
-    padding: 10px;
+    padding: 6px 10px;
     border-radius: 6px;
-    margin-top: 6px;
+    margin-top: 4px;
     display: inline-block;
     border: 1px solid var(--border-color);
 }
@@ -1126,7 +1156,118 @@ tr:hover td {
     user-select: text;
 }
 
+/* Export Actions Group */
+.export-actions-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+}
+
+.export-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+.btn-export-excel {
+    background: #f0fdf4;
+    border: 1px solid #22c55e;
+    color: #15803d;
+}
+.btn-export-excel:hover {
+    background: #22c55e;
+    color: #ffffff;
+    border-color: #22c55e;
+}
+
+.btn-export-pdf {
+    background: #fef2f2;
+    border: 1px solid #ef4444;
+    color: #b91c1c;
+}
+.btn-export-pdf:hover {
+    background: #ef4444;
+    color: #ffffff;
+    border-color: #ef4444;
+}
+
+.btn-export-jpg {
+    background: #f0f9ff;
+    border: 1px solid #0284c7;
+    color: #0369a1;
+}
+.btn-export-jpg:hover {
+    background: #0284c7;
+    color: #ffffff;
+    border-color: #0284c7;
+}
+
+/* Print Styles */
+@media print {
+    body {
+        background: #ffffff;
+        color: #000000;
+    }
+    /* Hide navigation/header sidebars/popups for clean prints */
+    .sidebar,
+    .header-bar .header-actions,
+    .export-actions-group,
+    .modal-overlay,
+    .bulk-actions-bar,
+    .sidebar-footer,
+    #header-action-btn,
+    .project-selector-container button,
+    .rooms-panel button,
+    .btn,
+    .room-side-panel button {
+        display: none !important;
+    }
+    .main-content {
+        margin-left: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+    }
+    .card, .timeline-card, .table-container, .room-side-panel {
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        background: transparent !important;
+        margin-bottom: 20px !important;
+    }
+    .tab-content {
+        display: none !important;
+    }
+    .tab-content.active {
+        display: block !important;
+    }
+    .rooms-grid {
+        max-height: none !important;
+        overflow: visible !important;
+        border: none !important;
+        padding: 0 !important;
+        grid-template-columns: repeat(auto-fill, minmax(75px, 1fr)) !important;
+    }
+    .room-card {
+        page-break-inside: avoid;
+        break-inside: avoid;
+    }
+}
+
 /* Responsiveness adjustments */
+.timeline-gantt-wrapper {
+    width: 100%;
+    overflow-x: hidden; /* Prevent horizontal scroll completely */
+    margin-top: 10px;
+    padding-bottom: 8px;
+}
+
 @media (max-width: 1024px) {
     .project-details-grid {
         grid-template-columns: 1fr;
@@ -1153,10 +1294,161 @@ tr:hover td {
         padding-bottom: 16px;
     }
     .timeline-header-grid {
-        grid-template-columns: 100px 1fr;
+        grid-template-columns: 100px 1fr !important;
+        min-width: 0 !important;
     }
     .timeline-row {
-        grid-template-columns: 100px 1fr;
+        grid-template-columns: 100px 1fr !important;
+        min-width: 0 !important;
+    }
+    .timeline-months {
+        font-size: 9px !important;
+        letter-spacing: -0.5px !important;
+    }
+    .timeline-months div {
+        padding: 0 !important;
+    }
+    .project-meta-name {
+        font-size: 12px !important;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .project-meta-duration {
+        font-size: 9px !important;
+    }
+    .timeline-bar-text {
+        font-size: 8px !important;
+        left: 4px !important;
+    }
+    
+    /* Table Responsive Overrides to prevent horizontal scrolling */
+    .table-container {
+        border: none !important;
+        background: transparent !important;
+        box-shadow: none !important;
+    }
+    table, thead, tbody, th, td, tr {
+        display: block;
+    }
+    thead {
+        display: none; /* Hide original headers */
+    }
+    tr {
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: var(--border-radius);
+        margin-bottom: 12px;
+        padding: 12px;
+        box-shadow: var(--shadow);
+    }
+    td {
+        padding: 8px 12px !important;
+        border-bottom: 1px solid #f1f5f9;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        text-align: right;
+    }
+    td:last-child {
+        border-bottom: none;
+    }
+    td::before {
+        content: attr(data-label);
+        font-weight: 600;
+        color: var(--text-secondary);
+        text-align: left;
+        margin-right: 8px;
+    }
+    
+    .header-bar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+    .header-actions {
+        width: 100%;
+        justify-content: space-between;
+    }
+    .project-selector-container {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 16px;
+    }
+    .selector-left {
+        flex-direction: column;
+        align-items: stretch;
+        width: 100%;
+    }
+    #room-project-select {
+        width: 100% !important;
+    }
+    
+    /* Make pills wrap nicely without overflow scroll */
+    .filter-pills {
+        justify-content: flex-start;
+        overflow-x: visible !important;
+        white-space: normal !important;
+        flex-wrap: wrap !important;
+        gap: 6px !important;
+        padding-bottom: 0;
+    }
+    
+    .rooms-grid {
+        grid-template-columns: repeat(auto-fill, minmax(65px, 1fr)) !important;
+        padding: 12px;
+        max-height: 400px;
+    }
+    .room-card {
+        height: 50px;
+        font-size: 11px;
+    }
+    .room-card-status {
+        font-size: 8px;
+    }
+}
+
+@media (max-width: 520px) {
+    .modal-content {
+        margin: 16px;
+        padding: 16px;
+    }
+    .date-select-group {
+        grid-template-columns: 1fr;
+        gap: 4px;
+    }
+}
+
+@media (max-width: 480px) {
+    .sidebar {
+        width: 60px;
+        padding: 16px 4px;
+    }
+    .main-content {
+        margin-left: 60px;
+        padding: 12px;
+    }
+    .timeline-header-grid {
+        grid-template-columns: 80px 1fr !important;
+    }
+    .timeline-row {
+        grid-template-columns: 80px 1fr !important;
+    }
+    .timeline-months {
+        font-size: 8px !important;
+        letter-spacing: -0.8px !important;
+    }
+    .project-meta-name {
+        font-size: 10px !important;
+    }
+    .project-meta-duration {
+        font-size: 8px !important;
+    }
+    
+    .worker-detail-row {
+        grid-template-columns: 1fr;
+        align-items: flex-start;
+        gap: 4px;
     }
 }
 

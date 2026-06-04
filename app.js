@@ -163,6 +163,11 @@ document.addEventListener('DOMContentLoaded', () => {
     let activeLogProjectId = ""; // pointer for daily log modal
     let isBulkMode = false;
     let selectedRoomsForDelete = [];
+    
+    // Daily Operations new states
+    let selectedDailyProjId = "";
+    let selectedDailyDate = "";
+    let activeDailyWorkers = []; // active workers log entries form queue
 
     // Robust local YYYY-MM-DD date string generator (bugfix timezone offset)
     function getLocalDateStr() {
@@ -396,9 +401,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         saveDB(false);
         
-        if (db.projects.length > 0 && !selectedProjectId) {
-            selectedProjectId = db.projects[0].id;
+        if (db.projects.length > 0) {
+            if (!selectedProjectId) selectedProjectId = db.projects[0].id;
+            selectedDailyProjId = db.projects[0].id;
         }
+        selectedDailyDate = getLocalDateStr();
     }
 
     function seedDefaultDB() {
@@ -478,7 +485,7 @@ document.addEventListener('DOMContentLoaded', () => {
             headerBtn.querySelector('span').textContent = "เพิ่มโปรเจ็กต์ใหม่";
             headerBtn.onclick = () => openModal('modal-add-project');
         } else if (activeTab === "tab-rooms") {
-            headerTitle.textContent = "รายละเอียดและผังห้องพัก";
+            headerTitle.textContent = "รายละเอียดและผังห้อง";
             headerBtn.style.display = "flex";
             headerBtn.querySelector('span').textContent = "อัพเดทห้องพัก";
             
@@ -491,7 +498,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             };
         } else if (activeTab === "tab-daily") {
-            headerTitle.textContent = "การปฏิบัติงานและคนงานเข้าปฏิบัติหน้าที่รายวัน";
+            headerTitle.textContent = "บันทึกผู้เข้าปฏิบัติงานรายวัน";
             headerBtn.style.display = "none";
         } else if (activeTab === "tab-issues") {
             headerTitle.textContent = "การจัดการปัญหาที่เกิดขึ้น";
@@ -755,11 +762,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const displayEnd = parseDateTH(proj.endDate);
 
             tr.innerHTML = `
-                <td><strong style="color: var(--accent); cursor:pointer;" class="proj-link">${proj.name}</strong></td>
-                <td>${total} ห้อง</td>
-                <td>${displayStart} ถึง ${displayEnd}</td>
-                <td>${displayEnd}</td>
-                <td>
+                <td data-label="ชื่อโปรเจ็กต์"><strong style="color: var(--accent); cursor:pointer;" class="proj-link">${proj.name}</strong></td>
+                <td data-label="ห้องทั้งหมด">${total} ห้อง</td>
+                <td data-label="ช่วงเวลาดำเนินการ">${displayStart} ถึง ${displayEnd}</td>
+                <td data-label="วันที่กำหนดเสร็จ">${displayEnd}</td>
+                <td data-label="ความคืบหน้า">
                     <div style="display:flex; align-items:center; gap:8px;">
                         <div style="flex-grow:1; background:#e2e8f0; height:8px; border-radius:4px; overflow:hidden; min-width:80px; border: 1px solid var(--border-color);">
                             <div style="width:${progressPct}%; background-color: #38bdf8; height:100%;"></div>
@@ -767,7 +774,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <span>${progressPct}%</span>
                     </div>
                 </td>
-                <td>
+                <td data-label="การจัดการ">
                     <div style="display:flex; gap:8px;">
                         <button class="btn btn-sm btn-edit-project-row" data-id="${proj.id}">แก้ไข</button>
                         <button class="btn btn-sm btn-danger btn-delete-project" data-id="${proj.id}">ลบ</button>
@@ -1074,299 +1081,227 @@ document.addEventListener('DOMContentLoaded', () => {
         return dailyAttendanceState[key];
     }
 
-    // RENDER TAB 3: Daily Attendance/Operations Log (Project-centric layout)
+    // RENDER TAB 3: Daily Attendance/Operations Log (Grouped 5-day sliding window layout)
     function renderDailyTab() {
-        const container = document.getElementById('daily-projects-list');
-        if (!container) return;
-        container.innerHTML = "";
+        const projSelect = document.getElementById('daily-project-select');
+        const dateSelect = document.getElementById('daily-date-select');
+        const logsContainer = document.getElementById('daily-5days-logs');
+        const workerSelect = document.getElementById('daily-worker-select');
+        const activeWorkersList = document.getElementById('daily-active-workers-list');
+        const poolList = document.getElementById('workers-pool-list');
 
-        if (db.projects.length === 0) {
-            container.innerHTML = `<div style="text-align: center; color: var(--text-muted); padding: 40px 0;">โปรดเพิ่มโครงการในแท็บ "แผนงานโปรเจ็กต์" ก่อน</div>`;
+        if (!projSelect || !dateSelect || !logsContainer || !workerSelect || !activeWorkersList || !poolList) return;
+
+        // 1. Populate Project Dropdown
+        const prevProjVal = projSelect.value || selectedDailyProjId;
+        projSelect.innerHTML = "";
+        db.projects.forEach(p => {
+            const opt = document.createElement('option');
+            opt.value = p.id;
+            opt.textContent = p.name;
+            if (p.id === prevProjVal) opt.selected = true;
+            projSelect.appendChild(opt);
+        });
+        if (projSelect.value) {
+            selectedDailyProjId = projSelect.value;
+        }
+
+        // 2. Set Date Select
+        if (!selectedDailyDate) {
+            selectedDailyDate = getLocalDateStr();
+        }
+        dateSelect.value = selectedDailyDate;
+
+        // 3. Populate Worker Select Dropdown (excluding active ones)
+        workerSelect.innerHTML = `<option value="">-- เลือกพนักงาน --</option>`;
+        db.workers.forEach(w => {
+            if (!activeDailyWorkers.some(active => active.name === w)) {
+                const opt = document.createElement('option');
+                opt.value = w;
+                opt.textContent = w;
+                workerSelect.appendChild(opt);
+            }
+        });
+
+        // 4. Render Active Workers Logger Queue
+        activeWorkersList.innerHTML = "";
+        if (activeDailyWorkers.length === 0) {
+            activeWorkersList.innerHTML = `<div style="font-size:12px; color:var(--text-muted); padding:4px 0;">ไม่มีพนักงานเข้าปฏิบัติงานที่เลือก</div>`;
+        } else {
+            activeDailyWorkers.forEach(w => {
+                const row = document.createElement('div');
+                row.className = "worker-detail-row";
+                row.innerHTML = `
+                    <span class="worker-name-label" style="font-weight:600; font-size:13px; color:var(--text-primary);">👤 ${w.name}:</span>
+                    <div style="display:flex; gap:8px; width:100%;">
+                        <input type="text" class="form-control worker-task-input" style="flex-grow:1; padding: 6px 12px; font-size: 13px;" placeholder="ระบุการปฏิบัติงาน..." value="${w.note}">
+                        <button type="button" class="btn btn-sm btn-danger btn-remove-active" style="padding:4px 8px; font-weight:bold; font-size:14px;">&times;</button>
+                    </div>
+                `;
+                
+                // Bind active row inputs
+                row.querySelector('.worker-task-input').addEventListener('input', (e) => {
+                    w.note = e.target.value;
+                });
+                row.querySelector('.btn-remove-active').addEventListener('click', () => {
+                    activeDailyWorkers = activeDailyWorkers.filter(active => active.name !== w.name);
+                    renderDailyTab();
+                });
+                activeWorkersList.appendChild(row);
+            });
+        }
+
+        // 5. Render 5-Day sliding window Logs
+        logsContainer.innerHTML = "";
+        const targetDate = new Date(selectedDailyDate);
+        if (isNaN(targetDate.getTime())) {
+            logsContainer.innerHTML = `<div style="text-align:center; color:var(--text-muted); font-size:13px;">กรุณาเลือกวันที่ถูกต้อง</div>`;
             return;
         }
 
-        // Safeguard db.workers array
-        if (!db.workers || !Array.isArray(db.workers)) {
-            db.workers = [
-                "สมพงษ์ แก้วมี",
-                "ช่างมานะ",
-                "ช่างวิชัย",
-                "ชาตรี ดีเลิศ",
-                "วิชัย ไกลทอง",
-                "มานะ อดทน"
-            ];
+        // Generate 5 days list (selected day + 4 preceding days)
+        const daysList = [];
+        for (let i = 0; i < 5; i++) {
+            const d = new Date(targetDate);
+            d.setDate(d.getDate() - i);
+            const y = d.getFullYear();
+            const m = String(d.getMonth() + 1).padStart(2, '0');
+            const day = String(d.getDate()).padStart(2, '0');
+            daysList.push(`${y}-${m}-${day}`);
         }
 
-        // Fetch Selected Period
-        const periodEl = document.getElementById('filter-log-period');
-        const period = periodEl ? periodEl.value : 'all';
-        const todayStr = getLocalDateStr();
+        daysList.forEach(dateStr => {
+            const dParts = dateStr.split('-');
+            const displayDate = dParts.length === 3 ? `${dParts[2]}/${dParts[1]}/${parseInt(dParts[0]) + 543}` : dateStr;
 
-        db.projects.forEach(proj => {
-            // 1. Select a Date first for this project card
-            if (!cardSelectedDates[proj.id]) {
-                cardSelectedDates[proj.id] = todayStr;
-            }
-            const activeDate = cardSelectedDates[proj.id];
+            // Get logs for selected project and date
+            const logsForDate = db.logs.filter(l => l && l.projectId === selectedDailyProjId && l.date === dateStr);
+            logsForDate.sort((a, b) => (b.time || '00:00').localeCompare(a.time || '00:00'));
 
-            // 2. Fetch Selected Workers State for this project & date
-            const activeWorkersState = getProjectDateState(proj.id, activeDate);
+            const dateHeader = document.createElement('div');
+            dateHeader.className = "log-date-header";
+            dateHeader.innerHTML = `📅 วันที่ ${displayDate}`;
+            logsContainer.appendChild(dateHeader);
 
-            // 3. Worker Selection Pool Badges
-            const poolHTML = db.workers.map(workerName => {
-                const isSelected = activeWorkersState.some(w => w.workerName === workerName);
-                return `
-                    <div class="pool-worker-badge${isSelected ? ' selected' : ''}" data-proj-id="${proj.id}" data-date="${activeDate}" data-name="${workerName}">
-                        ${workerName}
-                    </div>
-                `;
-            }).join('');
+            const itemsContainer = document.createElement('div');
+            itemsContainer.className = "log-date-items";
 
-            // 4. Worker Note Rows
-            const workerNotesHTML = activeWorkersState.map(w => {
-                return `
-                    <div class="worker-detail-row">
-                        <span class="worker-name-label">👤 ${w.workerName}:</span>
-                        <input type="text" class="form-control worker-task-input" data-proj-id="${proj.id}" data-date="${activeDate}" data-name="${w.workerName}" placeholder="ระบุการปฏิบัติงาน..." value="${w.note || ''}">
-                    </div>
-                `;
-            }).join('');
-
-            // 5. History Logs (Filter logs belonging to THIS project and fitting the date period)
-            let filteredLogs = db.logs.filter(l => l && l.projectId === proj.id);
-
-            if (period === 'today') {
-                filteredLogs = filteredLogs.filter(l => l.date === todayStr);
-            } else if (period === 'week') {
-                const sevenDaysAgo = new Date();
-                sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
-                const sevenDaysAgoStr = sevenDaysAgo.toISOString().split('T')[0];
-                filteredLogs = filteredLogs.filter(l => l.date >= sevenDaysAgoStr && l.date <= todayStr);
-            } else if (period === 'month') {
-                const currentYearMonth = todayStr.substring(0, 7);
-                filteredLogs = filteredLogs.filter(l => l.date.startsWith(currentYearMonth));
-            }
-
-            // Group filteredLogs by date
-            const logsByDate = {};
-            filteredLogs.forEach(log => {
-                if (log && log.date) {
-                    if (!logsByDate[log.date]) {
-                        logsByDate[log.date] = [];
-                    }
-                    logsByDate[log.date].push(log);
-                }
-            });
-
-            // Sort dates descending
-            const sortedDates = Object.keys(logsByDate).sort((a, b) => b.localeCompare(a));
-
-            // Generate grouped logs HTML
-            const groupedLogsHTML = sortedDates.map(dateStr => {
-                const dParts = dateStr.split('-');
-                const displayDate = dParts.length === 3 ? `${dParts[2]}/${dParts[1]}/${parseInt(dParts[0])+543}` : dateStr;
-                const logsForDate = logsByDate[dateStr];
-                
-                // Sort logs inside the same date by time descending
-                logsForDate.sort((a, b) => (b.time || '00:00').localeCompare(a.time || '00:00'));
-
-                const logsHTML = logsForDate.map(log => `
-                    <div class="activity-item" style="border-left: 4px solid var(--accent); margin-bottom: 8px;">
+            if (logsForDate.length === 0) {
+                itemsContainer.innerHTML = `<div style="padding:6px 12px; color:var(--text-muted); font-size:12px; font-style:italic;">ไม่มีรายชื่อผู้เข้าปฏิบัติงานในวันนี้</div>`;
+            } else {
+                logsForDate.forEach(log => {
+                    const item = document.createElement('div');
+                    item.className = "activity-item";
+                    item.style.borderLeft = "4px solid var(--accent)";
+                    item.style.marginBottom = "8px";
+                    item.innerHTML = `
                         <div class="activity-details" style="width: 100%;">
                             <div style="display:flex; justify-content:space-between; align-items:center;">
-                                <span style="font-weight:700; color:var(--text-primary);">👤 ช่างผู้ทำ: ${log.worker || 'ไม่ระบุชื่อ'}</span>
-                                <span class="activity-time" style="display:flex; align-items:center; gap:8px;">
+                                <span style="font-weight:700; color:var(--text-primary); font-size:12px;">👤 ช่างผู้ทำ: ${log.worker || 'ไม่ระบุชื่อ'}</span>
+                                <span class="activity-time" style="display:flex; align-items:center; gap:8px; font-size:11px;">
                                     ${log.time || ''} น.
                                     <button class="btn-delete-log" data-log-id="${log.id}" title="ลบประวัตินี้" style="background:none; border:none; color:var(--color-issue); cursor:pointer; font-size:16px; font-weight:bold;">&times;</button>
                                 </span>
                             </div>
-                            <div class="activity-issue-text" style="width:100%; display:block; padding:8px; margin-top:6px; background:#ffffff; border:1px solid #e2e8f0; border-radius:4px;">
+                            <div class="activity-issue-text" style="width:100%; display:block; background:#ffffff;">
                                 ${(log.note || 'เข้าปฏิบัติงานประจำวัน').replace(/\n/g, '<br>')}
                             </div>
                         </div>
-                    </div>
-                `).join('');
+                    `;
+                    item.querySelector('.btn-delete-log').addEventListener('click', () => {
+                        if (confirm("ต้องการลบรายงานความคืบหน้าของโครงการนี้ใช่หรือไม่?")) {
+                            deleteDailyLog(log.id);
+                        }
+                    });
+                    itemsContainer.appendChild(item);
+                });
+            }
+            logsContainer.appendChild(itemsContainer);
+        });
 
-                return `
-                    <div style="width: 100%;">
-                        <div class="log-date-header">📅 วันที่ ${displayDate}</div>
-                        <div class="log-date-items">
-                            ${logsHTML}
-                        </div>
-                    </div>
-                `;
-            }).join('');
-
-            // Create Project Card for Tab 3
-            const pCard = document.createElement('div');
-            pCard.className = "daily-project-card";
-
-            pCard.innerHTML = `
-                <div class="daily-project-header">
-                    <span class="daily-project-title">${proj.name}</span>
-                </div>
-
-                <div style="display:flex; align-items:center; gap:8px; margin-bottom: 16px;">
-                    <label style="font-size:13px; font-weight:600; color:var(--text-secondary);">📅 เลือกวันที่เพื่อบันทึกงาน:</label>
-                    <input type="date" class="form-control log-date-picker" data-proj-id="${proj.id}" value="${activeDate}" style="padding: 6px 12px; font-size: 13px; width: 160px; border-color: var(--accent);">
-                </div>
-                
-                <div class="daily-project-workers-box">
-                    <label class="daily-project-workers-label">👷 เลือกคนงานเข้าปฏิบัติงาน (คลิกเพื่อเลือก/ยกเลิก):</label>
-                    <div class="workers-pool-container">
-                        ${poolHTML}
-                    </div>
-
-                    <div class="add-worker-row" style="margin-top: 12px; margin-bottom: 12px;">
-                        <input type="text" class="form-control inline-worker-input" placeholder="เพิ่มคนงานใหม่ลงบอร์ด..." style="flex-grow:1; padding: 6px 12px; font-size: 13px;">
-                        <button type="button" class="btn btn-sm btn-primary btn-add-worker-inline">เพิ่มคนงาน</button>
-                    </div>
-
-                    <label class="daily-project-workers-label" style="margin-top: 16px;">✍️ กรอกรายละเอียดการปฏิบัติงานของคนงานแต่ละคน:</label>
-                    <div class="worker-details-list">
-                        ${workerNotesHTML}
-                        ${activeWorkersState.length === 0 ? '<span style="font-size:13px; color:var(--text-muted); display:inline-block; padding: 4px 0;">ไม่มีคนงานที่เลือกสำหรับวันที่ระบุ</span>' : ''}
-                    </div>
-
-                    <button type="button" class="btn btn-primary btn-save-daily-state" style="width:100%; margin-top:12px; display:flex; justify-content:center; font-weight:600;">
-                        💾 บันทึกรายงานความคืบหน้ารายวัน
-                    </button>
-                </div>
-
-                <div style="font-size: 13px; font-weight: 600; color: var(--text-secondary); margin-bottom: 4px; margin-top: 20px; border-top: 1px solid var(--border-color); padding-top: 16px;">
-                    ประวัติรายงานบันทึกความคืบหน้าเรียงตามวัน (${filteredLogs.length} รายการ):
-                </div>
-
-                <div class="activity-feed-container" style="gap:5px;">
-                    ${groupedLogsHTML}
-                    ${filteredLogs.length === 0 ? `<div style="text-align:center; padding:20px; color:var(--text-muted); font-size:13px;">ไม่มีรายงานความคืบหน้าสำหรับช่วงเวลานี้</div>` : ''}
+        // 6. Render Global Workers List (CRUD Manager)
+        poolList.innerHTML = "";
+        db.workers.forEach(w => {
+            const item = document.createElement('div');
+            item.style.display = "flex";
+            item.style.justifyContent = "space-between";
+            item.style.alignItems = "center";
+            item.style.background = "#f8fafc";
+            item.style.border = "1px solid var(--border-color)";
+            item.style.padding = "6px 12px";
+            item.style.borderRadius = "8px";
+            item.innerHTML = `
+                <span style="font-size:13px; font-weight:600; color:var(--text-primary);">${w}</span>
+                <div style="display:flex; gap:6px;">
+                    <button class="btn btn-sm btn-edit-worker" style="padding:2px 6px; font-size:11px; border-color:var(--accent); color:var(--accent);" data-name="${w}">แก้ไข</button>
+                    <button class="btn btn-sm btn-danger btn-delete-worker" style="padding:2px 6px; font-size:11px;" data-name="${w}">ลบ</button>
                 </div>
             `;
 
-            // Bind Date Selector change
-            const datePicker = pCard.querySelector('.log-date-picker');
-            if (datePicker) {
-                datePicker.addEventListener('change', (e) => {
-                    cardSelectedDates[proj.id] = e.target.value;
-                    renderDailyTab();
-                });
-            }
-
-            // Bind Pool Worker badge click
-            pCard.querySelectorAll('.pool-worker-badge').forEach(badge => {
-                badge.addEventListener('click', () => {
-                    const projId = badge.getAttribute('data-proj-id');
-                    const dateStr = badge.getAttribute('data-date');
-                    const workerName = badge.getAttribute('data-name');
+            // Edit Worker event
+            item.querySelector('.btn-edit-worker').addEventListener('click', () => {
+                const oldName = w;
+                const newName = prompt(`แก้ไขรายชื่อพนักงาน "${oldName}" เป็น:`, oldName);
+                if (newName && newName.trim() && newName.trim() !== oldName) {
+                    const cleanNewName = newName.trim();
+                    if (db.workers.includes(cleanNewName)) {
+                        alert(`เกิดข้อผิดพลาด: ชื่อ "${cleanNewName}" มีอยู่ในระบบแล้ว`);
+                        return;
+                    }
                     
-                    const state = getProjectDateState(projId, dateStr);
-                    const idx = state.findIndex(w => w.workerName === workerName);
-                    if (idx > -1) {
-                        state.splice(idx, 1);
-                    } else {
-                        state.push({ workerName, note: "" });
-                    }
-                    renderDailyTab();
-                });
-            });
+                    // Rename in pool
+                    const idx = db.workers.indexOf(oldName);
+                    if (idx > -1) db.workers[idx] = cleanNewName;
 
-            // Bind Worker Task notes input
-            pCard.querySelectorAll('.worker-task-input').forEach(input => {
-                input.addEventListener('input', (e) => {
-                    const projId = input.getAttribute('data-proj-id');
-                    const dateStr = input.getAttribute('data-date');
-                    const workerName = input.getAttribute('data-name');
-                    const val = e.target.value;
-                    
-                    const state = getProjectDateState(projId, dateStr);
-                    const item = state.find(w => w.workerName === workerName);
-                    if (item) {
-                        item.note = val;
-                    }
-                });
-            });
-
-            // Bind Add Worker Inline
-            const addWorkerBtn = pCard.querySelector('.btn-add-worker-inline');
-            const addWorkerInput = pCard.querySelector('.inline-worker-input');
-
-            const addWorkerFunc = () => {
-                if (!addWorkerInput) return;
-                const nameToAdd = addWorkerInput.value.trim();
-                if (!nameToAdd) return;
-                
-                if (!db.workers.includes(nameToAdd)) {
-                    db.workers.push(nameToAdd);
-                    const state = getProjectDateState(proj.id, activeDate);
-                    if (!state.some(w => w.workerName === nameToAdd)) {
-                        state.push({ workerName: nameToAdd, note: "" });
-                    }
-                    saveDB(false);
-                    renderDailyTab();
-                } else {
-                    const state = getProjectDateState(proj.id, activeDate);
-                    if (!state.some(w => w.workerName === nameToAdd)) {
-                        state.push({ workerName: nameToAdd, note: "" });
-                        renderDailyTab();
-                    } else {
-                        alert(`พนักงานชื่อ "${nameToAdd}" ได้รับการเพิ่มแล้ว`);
-                    }
-                }
-                addWorkerInput.value = "";
-            };
-
-            if (addWorkerBtn && addWorkerInput) {
-                addWorkerBtn.addEventListener('click', addWorkerFunc);
-                addWorkerInput.addEventListener('keydown', (e) => {
-                    if (e.key === 'Enter') {
-                        e.preventDefault();
-                        addWorkerFunc();
-                    }
-                });
-            }
-
-            // Bind Save Button click
-            const saveBtn = pCard.querySelector('.btn-save-daily-state');
-            saveBtn.addEventListener('click', () => {
-                const state = getProjectDateState(proj.id, activeDate);
-                
-                // Clear existing logs for this project and date
-                db.logs = db.logs.filter(l => !(l.projectId === proj.id && l.date === activeDate));
-                
-                // Push new logs
-                const currentTimeStr = new Date().toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit', hour12: false });
-                state.forEach(w => {
-                    db.logs.push({
-                        id: `log-${Date.now()}-${Math.random()}`,
-                        date: activeDate,
-                        time: currentTimeStr,
-                        worker: w.workerName,
-                        projectId: proj.id,
-                        projectName: proj.name,
-                        note: w.note || "เข้าปฏิบัติงานประจำวัน"
+                    // Propagate rename to db.logs
+                    db.logs.forEach(l => {
+                        if (l && l.worker === oldName) l.worker = cleanNewName;
                     });
-                });
 
-                // Sync project's todayWorkers list if date is today
-                if (activeDate === todayStr) {
-                    proj.todayWorkers = state.map(w => w.workerName).join(', ');
+                    // Propagate rename to db.issues
+                    db.issues.forEach(i => {
+                        if (i && i.reportedBy === oldName) i.reportedBy = cleanNewName;
+                    });
+
+                    // Propagate rename to project active rooms
+                    db.projects.forEach(p => {
+                        if (p.rooms) {
+                            p.rooms.forEach(r => {
+                                if (r && r.worker === oldName) r.worker = cleanNewName;
+                            });
+                        }
+                        if (p.todayWorkers) {
+                            const workersArr = p.todayWorkers.split(',').map(s => s.trim());
+                            const wIdx = workersArr.indexOf(oldName);
+                            if (wIdx > -1) {
+                                workersArr[wIdx] = cleanNewName;
+                                p.todayWorkers = workersArr.join(', ');
+                            }
+                        }
+                    });
+
+                    // Rename in activeDailyWorkers queue if present
+                    activeDailyWorkers.forEach(active => {
+                        if (active.name === oldName) active.name = cleanNewName;
+                    });
+
+                    saveDB();
+                    alert("บันทึกการแก้ไขชื่อพนักงานเรียบร้อย!");
                 }
-
-                saveDB();
-                alert(`บันทึกรายงานการทำงานของโครงการ "${proj.name}" วันที่ ${activeDate} เรียบร้อยแล้ว!`);
             });
 
-            // Log Deletion bind
-            pCard.querySelectorAll('.btn-delete-log').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    const logId = btn.getAttribute('data-log-id');
-                    if (confirm("ต้องการลบรายงานความคืบหน้าของโครงการนี้ใช่หรือไม่?")) {
-                        deleteDailyLog(logId);
-                    }
-                });
+            // Delete Worker event
+            item.querySelector('.btn-delete-worker').addEventListener('click', () => {
+                const nameToDelete = w;
+                if (confirm(`คุณแน่ใจว่าต้องการลบพนักงาน "${nameToDelete}" ออกจากฐานข้อมูลระบบ?`)) {
+                    db.workers = db.workers.filter(x => x !== nameToDelete);
+                    activeDailyWorkers = activeDailyWorkers.filter(active => active.name !== nameToDelete);
+                    saveDB();
+                    alert("ลบพนักงานเรียบร้อย!");
+                }
             });
 
-            container.appendChild(pCard);
+            poolList.appendChild(item);
         });
     }
 
@@ -1525,13 +1460,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // ==========================================
 
     function deleteDailyLog(logId) {
-        const log = db.logs.find(l => l.id === logId);
-        if (log) {
-            const key = `${log.projectId}_${log.date}`;
-            if (dailyAttendanceState[key]) {
-                dailyAttendanceState[key] = dailyAttendanceState[key].filter(w => w.workerName !== log.worker);
-            }
-        }
         db.logs = db.logs.filter(l => l.id !== logId);
         saveDB();
     }
@@ -1969,6 +1897,292 @@ document.addEventListener('DOMContentLoaded', () => {
             renderPlanTab();
         });
     }
+
+    // Bind Daily Operations elements
+    const dailyProjSelect = document.getElementById('daily-project-select');
+    if (dailyProjSelect) {
+        dailyProjSelect.addEventListener('change', (e) => {
+            selectedDailyProjId = e.target.value;
+            activeDailyWorkers = []; // clear current queue
+            renderDailyTab();
+        });
+    }
+
+    const dailyDateSelect = document.getElementById('daily-date-select');
+    if (dailyDateSelect) {
+        dailyDateSelect.addEventListener('change', (e) => {
+            selectedDailyDate = e.target.value;
+            renderDailyTab();
+        });
+    }
+
+    const btnAddSelectedWorker = document.getElementById('btn-add-selected-worker');
+    if (btnAddSelectedWorker) {
+        btnAddSelectedWorker.addEventListener('click', () => {
+            const wSelect = document.getElementById('daily-worker-select');
+            if (!wSelect) return;
+            const name = wSelect.value;
+            if (name && !activeDailyWorkers.some(w => w.name === name)) {
+                activeDailyWorkers.push({ name: name, note: "" });
+                wSelect.value = "";
+                renderDailyTab();
+            }
+        });
+    }
+
+    const btnSaveDailyAttendance = document.getElementById('btn-save-daily-attendance');
+    if (btnSaveDailyAttendance) {
+        btnSaveDailyAttendance.addEventListener('click', () => {
+            if (activeDailyWorkers.length === 0) {
+                alert("กรุณาเลือกพนักงานเข้าทำงานและระบุรายละเอียดก่อนบันทึก");
+                return;
+            }
+            const proj = db.projects.find(p => p.id === selectedDailyProjId);
+            if (!proj) return;
+
+            const currentTimeStr = new Date().toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit', hour12: false });
+
+            activeDailyWorkers.forEach(w => {
+                db.logs.push({
+                    id: `log-${Date.now()}-${Math.random()}`,
+                    date: selectedDailyDate,
+                    time: currentTimeStr,
+                    worker: w.name,
+                    projectId: selectedDailyProjId,
+                    projectName: proj.name,
+                    note: w.note || "เข้าปฏิบัติงานประจำวัน"
+                });
+            });
+
+            // Sync project's todayWorkers list if date is today
+            const todayStr = getLocalDateStr();
+            if (selectedDailyDate === todayStr) {
+                proj.todayWorkers = activeDailyWorkers.map(w => w.name).join(', ');
+            }
+
+            activeDailyWorkers = []; // Reset queue
+            saveDB();
+            alert("บันทึกรายงานผู้เข้าปฏิบัติงานรายวันเรียบร้อยแล้ว!");
+        });
+    }
+
+    const btnAddWorkerPool = document.getElementById('btn-add-worker-pool');
+    const inputNewWorkerName = document.getElementById('input-new-worker-name');
+
+    const addWorkerPoolFunc = () => {
+        if (!inputNewWorkerName) return;
+        const name = inputNewWorkerName.value.trim();
+        if (!name) return;
+        if (db.workers.includes(name)) {
+            alert("ชื่อพนักงานนี้มีอยู่แล้วในระบบ");
+            return;
+        }
+        db.workers.push(name);
+        inputNewWorkerName.value = "";
+        saveDB();
+        alert(`เพิ่ม "${name}" เข้าสู่ฐานข้อมูลระบบเรียบร้อย`);
+    };
+
+    if (btnAddWorkerPool && inputNewWorkerName) {
+        btnAddWorkerPool.addEventListener('click', addWorkerPoolFunc);
+        inputNewWorkerName.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                addWorkerPoolFunc();
+            }
+        });
+    }
+
+    // ==========================================
+    // 6. Data Exporters & Screenshot Utilities
+    // ==========================================
+    
+    function downloadCSV(filename, csvContent) {
+        const BOM = "\uFEFF";
+        const blob = new Blob([BOM + csvContent], { type: "text/csv;charset=utf-8;" });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.setAttribute("href", url);
+        link.setAttribute("download", filename);
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+
+    function exportPlanToExcel() {
+        let csv = "ชื่อโครงการ,วันที่เริ่มต้น,วันที่สิ้นสุด,จำนวนห้องทั้งหมด,จำนวนห้องที่เสร็จ,เปอร์เซ็นต์ความคืบหน้า\n";
+        db.projects.forEach(proj => {
+            const total = proj.rooms.length;
+            const completed = proj.rooms.filter(r => r.status === 'completed').length;
+            const nonSkipped = proj.rooms.filter(r => r.status !== 'skipped').length;
+            const progressPct = nonSkipped > 0 ? Math.round((completed / nonSkipped) * 100) : 0;
+            const name = `"${proj.name.replace(/"/g, '""')}"`;
+            csv += `${name},${proj.startDate},${proj.endDate},${total},${completed},${progressPct}%\n`;
+        });
+        downloadCSV("floor-tech-projects.csv", csv);
+    }
+
+    function exportRoomsToExcel() {
+        const proj = db.projects.find(p => p.id === selectedProjectId);
+        if (!proj) {
+            alert("ไม่พบข้อมูลโครงการที่กำลังแสดงเพื่อส่งออก");
+            return;
+        }
+        let csv = `รายชื่อห้องพักในโครงการ: ${proj.name}\n`;
+        csv += "เลขห้อง,สถานะ,ช่างผู้รับผิดชอบ,วันที่อัปเดตล่าสุด,บันทึกเพิ่มเติม\n";
+        
+        const sortedRooms = [...proj.rooms].sort((a, b) => a.roomNo.localeCompare(b.roomNo, undefined, {numeric: true, sensitivity: 'base'}));
+        sortedRooms.forEach(room => {
+            let statusText = "ยังไม่ทำ";
+            if (room.status === 'progress') statusText = "กำลังปู";
+            else if (room.status === 'inspect') statusText = "รอตรวจ";
+            else if (room.status === 'completed') statusText = "เสร็จสิ้น";
+            else if (room.status === 'issue') statusText = "มีปัญหา";
+            else if (room.status === 'skipped') statusText = "ข้ามงาน";
+            
+            const worker = `"${(room.worker || '').replace(/"/g, '""')}"`;
+            const note = `"${(room.note || '').replace(/"/g, '""')}"`;
+            csv += `${room.roomNo},${statusText},${worker},${room.lastUpdated || '-'},${note}\n`;
+        });
+        downloadCSV(`rooms_${proj.name.replace(/\s+/g, '_')}.csv`, csv);
+    }
+
+    function exportDailyLogsToExcel() {
+        const proj = db.projects.find(p => p.id === selectedDailyProjId);
+        const namePrefix = proj ? proj.name : "all_projects";
+        let csv = "วันที่,เวลา,โครงการ,ช่างผู้ทำงาน,รายละเอียดการปฏิบัติงาน\n";
+        
+        const filteredLogs = db.logs.filter(l => !selectedDailyProjId || l.projectId === selectedDailyProjId);
+        filteredLogs.sort((a, b) => b.date.localeCompare(a.date) || b.time.localeCompare(a.time));
+        
+        filteredLogs.forEach(log => {
+            const dateParts = log.date.split('-');
+            const displayDate = dateParts.length === 3 ? `${dateParts[2]}/${dateParts[1]}/${parseInt(dateParts[0]) + 543}` : log.date;
+            const pName = `"${(log.projectName || '').replace(/"/g, '""')}"`;
+            const worker = `"${(log.worker || '').replace(/"/g, '""')}"`;
+            const note = `"${(log.note || '').replace(/"/g, '""')}"`;
+            csv += `${displayDate},${log.time || ''},${pName},${worker},${note}\n`;
+        });
+        downloadCSV(`daily_logs_${namePrefix.replace(/\s+/g, '_')}.csv`, csv);
+    }
+
+    function exportIssuesToExcel() {
+        let csv = "โครงการ,เลขห้อง,วันที่แจ้ง,ผู้รายงาน,สถานะ,รายละเอียดปัญหา,แนวทางการแก้ไข,วันที่แก้ไขสำเร็จ\n";
+        
+        const sortedIssues = [...db.issues].sort((a,b) => {
+            if (a.status === b.status) return b.date.localeCompare(a.date);
+            return a.status === 'pending' ? -1 : 1;
+        });
+        
+        sortedIssues.forEach(issue => {
+            const repParts = issue.date.split('-');
+            const displayRepDate = repParts.length === 3 ? `${repParts[2]}/${repParts[1]}/${parseInt(repParts[0])+543}` : issue.date;
+            
+            let resDateStr = "-";
+            if (issue.resolveDate) {
+                const resParts = issue.resolveDate.split('-');
+                resDateStr = resParts.length === 3 ? `${resParts[2]}/${resParts[1]}/${parseInt(resParts[0])+543}` : issue.resolveDate;
+            }
+            
+            const statusText = issue.status === 'pending' ? "กำลังแก้ไข" : "แก้ไขเสร็จสิ้น";
+            const pName = `"${(issue.projectName || '').replace(/"/g, '""')}"`;
+            const reporter = `"${(issue.reportedBy || '').replace(/"/g, '""')}"`;
+            const desc = `"${(issue.desc || '').replace(/"/g, '""')}"`;
+            const solution = `"${(issue.solution || '').replace(/"/g, '""')}"`;
+            
+            csv += `${pName},${issue.roomNo},${displayRepDate},${reporter},${statusText},${desc},${solution},${resDateStr}\n`;
+        });
+        downloadCSV("issues_report.csv", csv);
+    }
+
+    function exportDataSummaryToExcel() {
+        let csv = "หัวข้อ,จำนวนรายการ\n";
+        csv += `จำนวนโครงการทั้งหมด,${db.projects.length}\n`;
+        csv += `จำนวนห้องทั้งหมดทุกโครงการ,${db.projects.reduce((acc, p) => acc + p.rooms.length, 0)}\n`;
+        csv += `จำนวนบันทึกงานรายวันทั้งหมด,${db.logs.length}\n`;
+        csv += `จำนวนปัญหาทั้งหมดที่พบ,${db.issues.length}\n`;
+        csv += `จำนวนช่าง/พนักงานในระบบ,${db.workers.length}\n`;
+        downloadCSV("floortech_database_summary.csv", csv);
+    }
+
+    function exportTabToJPG(tabId) {
+        const tabElement = document.getElementById(tabId);
+        if (!tabElement) return;
+        
+        const exportBar = tabElement.querySelector('.export-actions-group');
+        if (exportBar) exportBar.style.visibility = 'hidden';
+        
+        // Save original style properties to restore later
+        const originalAnimation = tabElement.style.animation;
+        const originalOpacity = tabElement.style.opacity;
+        const originalTransform = tabElement.style.transform;
+        
+        // Override animations/opacity to capture solid colors at 100% visibility
+        tabElement.style.animation = 'none';
+        tabElement.style.opacity = '1';
+        tabElement.style.transform = 'none';
+        
+        const options = {
+            useCORS: true,
+            allowTaint: true,
+            scale: 2,
+            backgroundColor: '#f1f5f9'
+        };
+        
+        html2canvas(tabElement, options).then(canvas => {
+            if (exportBar) exportBar.style.visibility = 'visible';
+            
+            // Restore original style properties
+            tabElement.style.animation = originalAnimation;
+            tabElement.style.opacity = originalOpacity;
+            tabElement.style.transform = originalTransform;
+            
+            const imgData = canvas.toDataURL('image/jpeg', 1.0); // Save at maximum quality
+            const dlLink = document.createElement('a');
+            dlLink.download = `${tabId}_screenshot.jpg`;
+            dlLink.href = imgData;
+            dlLink.style.display = 'none';
+            document.body.appendChild(dlLink);
+            dlLink.click();
+            document.body.removeChild(dlLink);
+        }).catch(err => {
+            console.error("Capture failed: ", err);
+            if (exportBar) exportBar.style.visibility = 'visible';
+            
+            // Restore original style properties in case of error
+            tabElement.style.animation = originalAnimation;
+            tabElement.style.opacity = originalOpacity;
+            tabElement.style.transform = originalTransform;
+            
+            alert("ไม่สามารถบันทึกรูปภาพได้ในขณะนี้");
+        });
+    }
+
+    // Setup Export Action Event Listeners
+    document.querySelectorAll('.btn-export-excel').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const tab = btn.getAttribute('data-tab');
+            if (tab === 'tab-plan') exportPlanToExcel();
+            else if (tab === 'tab-rooms') exportRoomsToExcel();
+            else if (tab === 'tab-daily') exportDailyLogsToExcel();
+            else if (tab === 'tab-issues') exportIssuesToExcel();
+            else if (tab === 'tab-data') exportDataSummaryToExcel();
+        });
+    });
+
+    document.querySelectorAll('.btn-export-pdf').forEach(btn => {
+        btn.addEventListener('click', () => {
+            window.print();
+        });
+    });
+
+    document.querySelectorAll('.btn-export-jpg').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const tab = btn.getAttribute('data-tab');
+            exportTabToJPG(tab);
+        });
+    });
 
     updateDashboardMetrics();
     updatePageHeader();
