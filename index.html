@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ระบบอัพเดทงานปูพื้น - FloorTech Manager</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="brand">
+                <div class="brand-icon">F</div>
+                <div class="brand-name">FloorTech</div>
+            </div>
+            <nav>
+                <ul class="nav-menu">
+                    <li>
+                        <a href="#" class="nav-item active" data-tab="tab-plan">
+                            <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+                            <span>แผนงานโปรเจ็กต์</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="nav-item" data-tab="tab-rooms">
+                            <svg viewBox="0 0 24 24"><path d="M4 11h5V5H4v6zm0 7h5v-6H4v6zm6 0h5v-6h-5v6zm6 0h5v-6h-5v6zm-6-7h5V5h-5v6zm6-6v6h5V5h-5z"/></svg>
+                            <span>รายละเอียดห้องพัก</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="nav-item" data-tab="tab-daily">
+                            <svg viewBox="0 0 24 24"><path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm2 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+                            <span>การทำงานรายวัน</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="nav-item" data-tab="tab-issues">
+                            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+                            <span>จัดการปัญหา</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="nav-item" data-tab="tab-data">
+                            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.04-.42 1.99-1.07 2.75z"/></svg>
+                            <span>จัดการข้อมูลระบบ</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="sidebar-footer">
+                <p>FloorTech Dashboard v1.0</p>
+                <p>© 2026 Flooring Co., Ltd.</p>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Header Bar -->
+            <div class="header-bar">
+                <div>
+                    <h1 class="page-title" id="current-page-title">แผนงานแต่ละโปรเจ็กต์</h1>
+                </div>
+                <div class="header-actions">
+                    <div class="date-badge">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z"/></svg>
+                        <span id="header-date-display">04 มิถุนายน 2569</span>
+                    </div>
+                    <button class="btn btn-primary" id="header-action-btn">
+                        <span>เพิ่มโปรเจ็กต์ใหม่</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Tab 1: Project Plan & Timeline -->
+            <section id="tab-plan" class="tab-content active">
+                <!-- Summary Stats -->
+                <div class="card-grid">
+                    <div class="card metric-card">
+                        <div class="metric-info">
+                            <h3>โปรเจ็กต์ทั้งหมด</h3>
+                            <div class="value" id="stat-total-projects">0</div>
+                        </div>
+                        <div class="metric-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 7V3H2v18h20V7H12zm-6 12H4v-2h2v2zm0-4H4v-2h2v2zm0-4H4V9h2v2zm0-4H4V5h2v2zm4 12H8v-2h2v2zm0-4H8v-2h2v2zm0-4H8V9h2v2zm0-4H8V5h2v2zm10 12h-8v-2h2v-2h-2v-2h2v-2h-2V9h8v10zm-2-8h-2v2h2v-2zm0 4h-2v2h2v-2z"/></svg>
+                        </div>
+                    </div>
+                    <div class="card metric-card">
+                        <div class="metric-info">
+                            <h3>ห้องทั้งหมด</h3>
+                            <div class="value" id="stat-total-rooms">0</div>
+                        </div>
+                        <div class="metric-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/></svg>
+                        </div>
+                    </div>
+                    <div class="card metric-card">
+                        <div class="metric-info">
+                            <h3>ปูพื้นสำเร็จแล้ว</h3>
+                            <div class="value" id="stat-completed-rooms">0</div>
+                        </div>
+                        <div class="metric-icon" style="color: var(--color-completed);">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg>
+                        </div>
+                    </div>
+                    <div class="card metric-card">
+                        <div class="metric-info">
+                            <h3>ปัญหาที่ยังรอแก้ไข</h3>
+                            <div class="value" id="stat-pending-issues">0</div>
+                        </div>
+                        <div class="metric-icon" style="color: var(--color-issue);">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Timeline / Gantt Chart Section -->
+                <div class="timeline-section">
+                    <div class="timeline-card">
+                        <div class="timeline-header-grid">
+                            <div style="font-weight: 600; font-size: 14px;">ชื่อโปรเจ็กต์ / ระยะเวลา</div>
+                            <div class="timeline-months">
+                                <div>ม.ค.</div>
+                                <div>ก.พ.</div>
+                                <div>มี.ค.</div>
+                                <div>เม.ย.</div>
+                                <div>พ.ค.</div>
+                                <div>มิ.ย.</div>
+                                <div>ก.ค.</div>
+                                <div>ส.ค.</div>
+                                <div>ก.ย.</div>
+                                <div>ต.ค.</div>
+                                <div>พ.ย.</div>
+                                <div>ธ.ค.</div>
+                            </div>
+                        </div>
+                        <div class="timeline-rows" id="timeline-project-rows">
+                            <!-- Injected by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project List Table -->
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ชื่อโปรเจ็กต์</th>
+                                <th>ห้องทั้งหมด</th>
+                                <th>ช่วงเวลาดำเนินการ</th>
+                                <th>วันที่กำหนดเสร็จ</th>
+                                <th>ความคืบหน้า</th>
+                                <th>การจัดการ</th>
+                            </tr>
+                        </thead>
+                        <tbody id="project-list-tbody">
+                            <!-- Injected by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Tab 2: Project Detail & Room Tracker -->
+            <section id="tab-rooms" class="tab-content">
+                <!-- Selector & Actions -->
+                <div class="project-selector-container">
+                    <div class="selector-left">
+                        <label for="room-project-select" style="font-weight: 500; font-size: 14px;">เลือกโปรเจ็กต์:</label>
+                        <select id="room-project-select" class="form-control" style="width: 250px;">
+                            <!-- Options injected by JavaScript -->
+                        </select>
+                    </div>
+                    
+                    <div class="filter-pills">
+                        <div class="filter-pill active" data-filter="all">ทั้งหมด (<span id="count-all">0</span>)</div>
+                        <div class="filter-pill" data-filter="pending" style="border-left: 3px solid var(--color-pending);">ยังไม่ทำ (<span id="count-pending">0</span>)</div>
+                        <div class="filter-pill" data-filter="progress" style="border-left: 3px solid var(--color-progress);">กำลังปู (<span id="count-progress">0</span>)</div>
+                        <div class="filter-pill" data-filter="inspect" style="border-left: 3px solid var(--color-inspect);">รอตรวจ (<span id="count-inspect">0</span>)</div>
+                        <div class="filter-pill" data-filter="completed" style="border-left: 3px solid var(--color-completed);">เสร็จสิ้น (<span id="count-completed">0</span>)</div>
+                        <div class="filter-pill" data-filter="issue" style="border-left: 3px solid var(--color-issue);">มีปัญหา (<span id="count-issue">0</span>)</div>
+                    </div>
+                </div>
+
+                <div class="project-details-grid">
+                    <!-- Room Grid Board -->
+                    <div class="rooms-panel">
+                        <h3 style="font-size: 16px; font-weight: 600;">ผังห้องพักทั้งหมด (<span id="room-grid-title-count">0</span> ห้อง)</h3>
+                        <div class="rooms-grid" id="rooms-grid-container">
+                            <!-- Injected by JavaScript -->
+                        </div>
+                    </div>
+
+                    <!-- Project Progress & Quick Control Details -->
+                    <div class="room-side-panel">
+                        <h3 style="font-size: 16px; font-weight: 600; border-bottom: 1px solid var(--border-color); padding-bottom: 12px;" id="side-panel-project-name">โปรเจ็กต์</h3>
+                        
+                        <div class="progress-donut-wrapper">
+                            <div class="progress-donut-svg">
+                                <svg width="140" height="140">
+                                    <circle class="progress-donut-bg" cx="70" cy="70" r="60"></circle>
+                                    <circle class="progress-donut-fill" id="side-progress-donut" cx="70" cy="70" r="60"></circle>
+                                </svg>
+                                <div class="progress-donut-text">
+                                    <span class="progress-donut-percent" id="side-progress-percent">0%</span>
+                                    <span class="progress-donut-label">เสร็จสมบูรณ์</span>
+                                </div>
+                            </div>
+                            <div style="font-size: 14px; text-align: center; color: var(--text-secondary);" id="side-progress-ratio">
+                                ปูพื้นเสร็จแล้ว 0 จาก 0 ห้อง
+                            </div>
+                        </div>
+
+                        <!-- Completed and Pending room lists -->
+                        <div style="display: flex; flex-direction: column; gap: 12px;">
+                            <h4 style="font-size: 13px; color: var(--text-secondary);">ห้องที่ปูเสร็จแล้ว:</h4>
+                            <p style="font-size: 14px; color: #34d399; line-height: 1.5; background: rgba(16, 185, 129, 0.05); padding: 8px 12px; border-radius: 6px; border: 1px solid rgba(16, 185, 129, 0.15); max-height: 80px; overflow-y: auto;" id="side-completed-list">
+                                -
+                            </p>
+                            
+                            <h4 style="font-size: 13px; color: var(--text-secondary); margin-top: 4px;">ห้องที่เหลือ:</h4>
+                            <p style="font-size: 14px; color: var(--text-secondary); line-height: 1.5; background: rgba(255, 255, 255, 0.02); padding: 8px 12px; border-radius: 6px; border: 1px solid var(--border-color); max-height: 120px; overflow-y: auto;" id="side-remaining-list">
+                                -
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tab 3: Daily Operations Log -->
+            <section id="tab-daily" class="tab-content">
+                <div class="daily-log-grid">
+                    <!-- Daily Logger form -->
+                    <div class="log-entry-form-card">
+                        <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid var(--border-color);">บันทึกการทำงานรายวัน</h3>
+                        <form id="daily-log-form">
+                            <div class="form-group">
+                                <label for="log-worker">พนักงานผู้ปฏิบัติงาน / ผู้ตรวจ:</label>
+                                <input type="text" id="log-worker" class="form-control" placeholder="ระบุชื่อพนักงาน" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="log-project">โปรเจ็กต์:</label>
+                                <select id="log-project" class="form-control" required>
+                                    <!-- Injected by JavaScript -->
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="log-room">เลขห้อง:</label>
+                                <input type="text" id="log-room" class="form-control" placeholder="ระบุเลขห้อง (เช่น 101)" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="log-type">ประเภทงาน:</label>
+                                <select id="log-type" class="form-control">
+                                    <option value="lay">งานปูพื้น</option>
+                                    <option value="inspect">งานตรวจสอบความเรียบร้อย</option>
+                                    <option value="fix">งานแก้ไขงานปูพื้น</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="log-status">สถานะหลังปฏิบัติงาน:</label>
+                                <select id="log-status" class="form-control">
+                                    <option value="progress">กำลังปูพื้น</option>
+                                    <option value="inspect">ปูพื้นเสร็จแล้ว/รอการตรวจสอบ</option>
+                                    <option value="completed">ผ่านการตรวจสอบ (เสร็จสิ้น)</option>
+                                    <option value="delayed">ติดปัญหา/ล่าช้ากว่ากำหนด</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group" id="log-delay-reason-group" style="display: none;">
+                                <label for="log-delay-reason" style="color: #ef4444;">เหตุผลที่ล่าช้า / ปัญหาที่พบ:</label>
+                                <textarea id="log-delay-reason" class="form-control" rows="3" placeholder="ระบุปัญหาที่ทำให้อล่าช้าหรือปูพื้นไม่เสร็จ"></textarea>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="log-date">วันที่ปฏิบัติงาน:</label>
+                                <input type="date" id="log-date" class="form-control" required>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 10px;">บันทึกรายงานรายวัน</button>
+                        </form>
+                    </div>
+
+                    <!-- Operations Feed List -->
+                    <div style="display: flex; flex-direction: column; gap: 16px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <h3 style="font-size: 16px; font-weight: 600;">ประวัติการส่งรายงานปฏิบัติงาน</h3>
+                            <div style="display: flex; gap: 8px;">
+                                <input type="date" id="filter-log-date" class="form-control" style="padding: 6px 12px; font-size: 12px;">
+                                <button class="btn btn-sm" id="btn-clear-date-filter">ทั้งหมด</button>
+                            </div>
+                        </div>
+                        
+                        <div class="activity-feed-container">
+                            <div class="activity-feed" id="daily-activity-feed">
+                                <!-- Injected by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tab 4: Issues Tracker -->
+            <section id="tab-issues" class="tab-content">
+                <!-- Summary Stats -->
+                <div class="card-grid" style="grid-template-columns: repeat(3, 1fr);">
+                    <div class="card metric-card">
+                        <div class="metric-info">
+                            <h3>ปัญหาทั้งหมดที่พบ</h3>
+                            <div class="value" id="issue-total-count">0</div>
+                        </div>
+                        <div class="metric-icon" style="color: var(--color-issue);">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+                        </div>
+                    </div>
+                    <div class="card metric-card">
+                        <div class="metric-info">
+                            <h3>กำลังดำเนินการแก้ไข</h3>
+                            <div class="value" id="issue-active-count">0</div>
+                        </div>
+                        <div class="metric-icon" style="color: var(--color-inspect);">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.04-.42 1.99-1.07 2.75z"/></svg>
+                        </div>
+                    </div>
+                    <div class="card metric-card">
+                        <div class="metric-info">
+                            <h3>แก้ไขเสร็จสิ้นแล้ว</h3>
+                            <div class="value" id="issue-resolved-count">0</div>
+                        </div>
+                        <div class="metric-icon" style="color: var(--color-completed);">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Issues Card Grid -->
+                <div style="display: flex; flex-direction: column; gap: 16px;">
+                    <h3 style="font-size: 16px; font-weight: 600;">รายการปัญหาทั้งหมดในโครงการ</h3>
+                    <div class="issues-grid" id="issues-list-container">
+                        <!-- Injected by JavaScript -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tab 5: Data Management & Backup -->
+            <section id="tab-data" class="tab-content">
+                <div class="card-grid" style="grid-template-columns: repeat(2, 1fr);">
+                    <!-- Export / Import Card -->
+                    <div class="card">
+                        <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 12px;">ส่งออก / นำเข้าข้อมูลระบบ</h3>
+                        <p style="font-size: 14px; color: var(--text-secondary); margin-bottom: 20px; line-height: 1.5;">
+                            คุณสามารถดาวน์โหลดข้อมูลทั้งหมดของระบบ (แผนงาน, รายละเอียดการปูพื้นแต่ละห้อง, รายงานรายวัน, และปัญหา) เป็นไฟล์ JSON เพื่อนำไปเปิดในเครื่องอื่น หรือใช้สำรองข้อมูลไว้ได้
+                        </p>
+                        
+                        <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                            <button class="btn btn-primary" id="btn-export-data">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/></svg>
+                                <span>ดาวน์โหลดสำรองข้อมูล (JSON)</span>
+                            </button>
+                            
+                            <label class="btn" style="position: relative; overflow: hidden; cursor: pointer;">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/></svg>
+                                <span>นำเข้าไฟล์ข้อมูลสำรอง</span>
+                                <input type="file" id="input-import-file" style="display: none;" accept=".json">
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- System Controls Card -->
+                    <div class="card" style="border-color: rgba(239, 68, 68, 0.2);">
+                        <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 12px; color: #ef4444;">ล้างข้อมูลระบบ</h3>
+                        <p style="font-size: 14px; color: var(--text-secondary); margin-bottom: 20px; line-height: 1.5;">
+                            การล้างข้อมูลจะลบค่าความคืบหน้า ปัญหา และรายงานทั้งหมดออกจาก LocalStorage คุณสามารถเลือกที่จะรีเซ็ตระบบกลับไปเป็นค่าเริ่มต้น (Demo Data) หรือรีเซ็ตเป็นระบบว่างเปล่าทั้งหมดได้
+                        </p>
+                        
+                        <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                            <button class="btn" id="btn-reset-demo" style="border-color: var(--color-inspect); color: var(--color-inspect);">
+                                <span>รีเซ็ตข้อมูลเริ่มต้น (Demo Data)</span>
+                            </button>
+                            <button class="btn btn-danger" id="btn-clear-system">
+                                <span>ล้างข้อมูลระบบทั้งหมด (Clear All)</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Database Live Viewer -->
+                <div style="display: flex; flex-direction: column; gap: 12px;">
+                    <h3 style="font-size: 16px; font-weight: 600;">ข้อมูลดิบในระบบ (Raw Database)</h3>
+                    <pre class="json-view" id="database-raw-view">
+                        Loading...
+                    </pre>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modal 1: Add New Project Dialog -->
+    <div class="modal-overlay" id="modal-add-project">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">เพิ่มโปรเจ็กต์ใหม่</h3>
+                <button class="modal-close" onclick="closeModal('modal-add-project')">&times;</button>
+            </div>
+            <form id="form-add-project">
+                <div class="form-group">
+                    <label for="project-name">ชื่อโครงการ/โปรเจ็กต์:</label>
+                    <input type="text" id="project-name" class="form-control" placeholder="เช่น โครงการคอนโด A" required>
+                </div>
+                <div class="form-group">
+                    <label for="project-total-rooms">จำนวนห้องปูพื้นทั้งหมด:</label>
+                    <input type="number" id="project-total-rooms" class="form-control" min="1" max="500" value="48" required>
+                </div>
+                <div class="form-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                    <div>
+                        <label for="project-start-month">เดือนเริ่มต้น:</label>
+                        <select id="project-start-month" class="form-control">
+                            <option value="1">มกราคม</option>
+                            <option value="2">กุมภาพันธ์</option>
+                            <option value="3">มีนาคม</option>
+                            <option value="4">เมษายน</option>
+                            <option value="5">พฤษภาคม</option>
+                            <option value="6">มิถุนายน</option>
+                            <option value="7">กรกฎาคม</option>
+                            <option value="8">สิงหาคม</option>
+                            <option value="9">กันยายน</option>
+                            <option value="10">ตุลาคม</option>
+                            <option value="11">พฤศจิกายน</option>
+                            <option value="12">ธันวาคม</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="project-end-month">เดือนที่สิ้นสุด:</label>
+                        <select id="project-end-month" class="form-control">
+                            <option value="1">มกราคม</option>
+                            <option value="2">กุมภาพันธ์</option>
+                            <option value="3">มีนาคม</option>
+                            <option value="4">เมษายน</option>
+                            <option value="5">พฤษภาคม</option>
+                            <option value="6">มิถุนายน</option>
+                            <option value="7">กรกฎาคม</option>
+                            <option value="8">สิงหาคม</option>
+                            <option value="9">กันยายน</option>
+                            <option value="10">ตุลาคม</option>
+                            <option value="11">พฤศจิกายน</option>
+                            <option value="12" selected>ธันวาคม</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="project-due-date">วันที่กำหนดส่งมอบงาน:</label>
+                    <input type="date" id="project-due-date" class="form-control" required>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn" onclick="closeModal('modal-add-project')">ยกเลิก</button>
+                    <button type="submit" class="btn btn-primary">สร้างโครงการ</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal 2: Room Status Detail Manager -->
+    <div class="modal-overlay" id="modal-room-manager">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="room-manager-title">จัดการข้อมูลห้อง 101</h3>
+                <button class="modal-close" onclick="closeModal('modal-room-manager')">&times;</button>
+            </div>
+            <form id="form-manage-room">
+                <!-- Project ID & Room ID hidden properties -->
+                <input type="hidden" id="room-manage-project-id">
+                <input type="hidden" id="room-manage-room-no">
+                
+                <div class="form-group">
+                    <label>สถานะงานปูพื้นปัจจุบัน:</label>
+                    <select id="room-manage-status" class="form-control">
+                        <option value="pending">ยังไม่ทำ (Pending)</option>
+                        <option value="progress">กำลังปูพื้น (In Progress)</option>
+                        <option value="inspect">รอดำเนินการตรวจสอบ (Inspecting)</option>
+                        <option value="completed">เสร็จสิ้นเรียบร้อย (Completed)</option>
+                        <option value="issue">มีปัญหาขัดข้อง (Issue)</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="room-manage-worker">พนักงานที่ได้รับมอบหมาย / ผู้ตรวจสอบล่าสุด:</label>
+                    <input type="text" id="room-manage-worker" class="form-control" placeholder="ใส่ชื่อพนักงาน">
+                </div>
+
+                <div class="form-group">
+                    <label for="room-manage-note">บันทึกเพิ่มเติมของห้องนี้:</label>
+                    <textarea id="room-manage-note" class="form-control" rows="2" placeholder="รายละเอียด เช่น ติดตังบัวพื้นแล้ว, รอเคลียร์หน้าดิน"></textarea>
+                </div>
+                
+                <div id="room-manage-issue-panel" style="display: none; border: 1px solid rgba(239, 68, 68, 0.3); background: rgba(239, 68, 68, 0.05); padding: 12px; border-radius: 8px; margin-top: 10px;">
+                    <h4 style="font-size: 13px; color: #ef4444; margin-bottom: 8px;">รายละเอียดปัญหาการขัดข้อง</h4>
+                    <div class="form-group">
+                        <label for="room-manage-issue-desc" style="color: var(--text-secondary);">อธิบายปัญหาที่พบ:</label>
+                        <textarea id="room-manage-issue-desc" class="form-control" rows="2" placeholder="อธิบายปัญหาที่เกิดขึ้น เช่น ปูนรองพื้นมีความชื้นสูง, กระเบื้องแตกหัก"></textarea>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn" onclick="closeModal('modal-room-manager')">ปิดหน้าต่าง</button>
+                    <button type="submit" class="btn btn-primary">อัปเดตข้อมูล</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal 3: Issue Resolution Manager -->
+    <div class="modal-overlay" id="modal-issue-manager">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="issue-manager-title">จัดการและแก้ไขปัญหา</h3>
+                <button class="modal-close" onclick="closeModal('modal-issue-manager')">&times;</button>
+            </div>
+            <form id="form-resolve-issue">
+                <input type="hidden" id="issue-resolve-id">
+                
+                <div class="form-group">
+                    <label>รายละเอียดปัญหา:</label>
+                    <div id="issue-resolve-desc" style="font-size: 13px; color: var(--text-secondary); background: rgba(0,0,0,0.2); padding: 12px; border-radius: 8px; border: 1px solid var(--border-color); line-height: 1.5; margin-bottom: 8px;">
+                        -
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="issue-resolve-status">สถานะการแก้ไข:</label>
+                    <select id="issue-resolve-status" class="form-control">
+                        <option value="pending">กำลังแก้ไข (Resolving)</option>
+                        <option value="resolved">แก้ไขเสร็จสิ้นเรียบร้อย (Resolved)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="issue-resolve-solution">วิธีการแก้ไขปัญหา / รายละเอียดการแก้:</label>
+                    <textarea id="issue-resolve-solution" class="form-control" rows="3" placeholder="ระบุการปรับปรุงแก้ไข เช่น ดำเนินการเป่าปูนและปูยางยางใหม่เรียบร้อยแล้ว" required></textarea>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn" onclick="closeModal('modal-issue-manager')">ยกเลิก</button>
+                    <button type="submit" class="btn btn-primary">บันทึกผลการแก้ไข</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
