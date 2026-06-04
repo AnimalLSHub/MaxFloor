@@ -117,9 +117,24 @@
                 <!-- Timeline / Gantt Chart Section -->
                 <div class="timeline-section">
                     <div class="timeline-card">
+                        <div style="display:flex; justify-content:flex-end; align-items:center; gap:16px; margin-bottom: 16px; flex-wrap: wrap;">
+                            <div style="display:flex; align-items:center; gap:8px;">
+                                <label style="font-size:13px; font-weight:600; color:var(--text-secondary);">เลือกปี (พ.ศ.):</label>
+                                <select id="select-timeline-year" class="form-control" style="width: 120px; padding: 4px 8px; font-size: 13px; border-color: var(--accent);">
+                                    <!-- Populated dynamically by JS -->
+                                </select>
+                            </div>
+                            <div style="display:flex; align-items:center; gap:8px;">
+                                <label style="font-size:13px; font-weight:600; color:var(--text-secondary);">แสดงมุมมองแผนงาน:</label>
+                                <select id="select-timeline-view" class="form-control" style="width: 160px; padding: 4px 8px; font-size: 13px; border-color: var(--accent);">
+                                    <option value="monthly" selected>รายเดือน (Monthly)</option>
+                                    <option value="quarterly">รายไตรมาส (Quarterly)</option>
+                                </select>
+                            </div>
+                        </div>
                         <div class="timeline-header-grid">
                             <div style="font-weight: 600; font-size: 14px;">ชื่อโปรเจ็กต์ / ระยะเวลา</div>
-                            <div class="timeline-months">
+                            <div class="timeline-months" id="timeline-months-header">
                                 <div>ม.ค.</div>
                                 <div>ก.พ.</div>
                                 <div>มี.ค.</div>
@@ -166,25 +181,49 @@
                 <div class="project-selector-container">
                     <div class="selector-left">
                         <label for="room-project-select" style="font-weight: 500; font-size: 14px;">เลือกโปรเจ็กต์:</label>
-                        <select id="room-project-select" class="form-control" style="width: 250px;">
+                        <select id="room-project-select" class="form-control" style="width: 230px;">
                             <!-- Options injected by JavaScript -->
                         </select>
+                        <button class="btn btn-sm" id="btn-edit-current-project" style="border-color: var(--accent); color: var(--accent);">
+                            <span>แก้ไขชื่อ/กำหนดเสร็จ</span>
+                        </button>
                     </div>
                     
                     <div class="filter-pills">
                         <div class="filter-pill active" data-filter="all">ทั้งหมด (<span id="count-all">0</span>)</div>
-                        <div class="filter-pill" data-filter="pending" style="border-left: 3px solid var(--color-pending);">ยังไม่ทำ (<span id="count-pending">0</span>)</div>
-                        <div class="filter-pill" data-filter="progress" style="border-left: 3px solid var(--color-progress);">กำลังปู (<span id="count-progress">0</span>)</div>
-                        <div class="filter-pill" data-filter="inspect" style="border-left: 3px solid var(--color-inspect);">รอตรวจ (<span id="count-inspect">0</span>)</div>
-                        <div class="filter-pill" data-filter="completed" style="border-left: 3px solid var(--color-completed);">เสร็จสิ้น (<span id="count-completed">0</span>)</div>
-                        <div class="filter-pill" data-filter="issue" style="border-left: 3px solid var(--color-issue);">มีปัญหา (<span id="count-issue">0</span>)</div>
+                        <div class="filter-pill" data-filter="pending" style="border-left: 3.5px solid var(--color-pending);">ยังไม่ทำ (<span id="count-pending">0</span>)</div>
+                        <div class="filter-pill" data-filter="progress" style="border-left: 3.5px solid var(--color-progress);">กำลังปู (<span id="count-progress">0</span>)</div>
+                        <div class="filter-pill" data-filter="inspect" style="border-left: 3.5px solid var(--color-inspect);">รอตรวจ (<span id="count-inspect">0</span>)</div>
+                        <div class="filter-pill" data-filter="completed" style="border-left: 3.5px solid var(--color-completed);">เสร็จสิ้น (<span id="count-completed">0</span>)</div>
+                        <div class="filter-pill" data-filter="issue" style="border-left: 3.5px solid var(--color-issue);">มีปัญหา (<span id="count-issue">0</span>)</div>
+                        <div class="filter-pill" data-filter="skipped" style="border-left: 3.5px dashed var(--color-skipped);">ข้าม (<span id="count-skipped">0</span>)</div>
                     </div>
                 </div>
 
                 <div class="project-details-grid">
                     <!-- Room Grid Board -->
                     <div class="rooms-panel">
-                        <h3 style="font-size: 16px; font-weight: 600;">ผังห้องพักทั้งหมด (<span id="room-grid-title-count">0</span> ห้อง)</h3>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                            <h3 style="font-size: 16px; font-weight: 600;">ผังห้องพักทั้งหมด (<span id="room-grid-title-count">0</span> ห้อง)</h3>
+                            <div style="display: flex; gap: 8px;">
+                                <button class="btn btn-sm" id="btn-bulk-mode-trigger" style="border-color: #dc2626; color: #dc2626;">
+                                    <span>🗑️ ลบหลายห้องพร้อมกัน</span>
+                                </button>
+                                <button class="btn btn-sm btn-primary" id="btn-add-room-trigger">
+                                    <span>+ เพิ่มห้องพักใหม่</span>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Bulk Actions Bar -->
+                        <div class="bulk-actions-bar" id="bulk-actions-bar">
+                            <div class="bulk-actions-info" id="bulk-actions-info">เลือกห้องเพื่อลบ... (เลือกแล้ว 0 ห้อง)</div>
+                            <div class="bulk-actions-buttons">
+                                <button type="button" class="btn btn-sm" id="btn-bulk-select-all" style="border-color: var(--accent); color: var(--accent);">เลือกทั้งหมด</button>
+                                <button type="button" class="btn btn-sm btn-danger" id="btn-bulk-delete-confirm" style="font-weight: 600;">ลบห้องที่เลือก</button>
+                                <button type="button" class="btn btn-sm" id="btn-bulk-cancel">ยกเลิก</button>
+                            </div>
+                        </div>
                         <div class="rooms-grid" id="rooms-grid-container">
                             <!-- Injected by JavaScript -->
                         </div>
@@ -213,7 +252,7 @@
                         <!-- Completed and Pending room lists -->
                         <div style="display: flex; flex-direction: column; gap: 12px;">
                             <h4 style="font-size: 13px; color: var(--text-secondary);">ห้องที่ปูเสร็จแล้ว:</h4>
-                            <p style="font-size: 14px; color: #34d399; line-height: 1.5; background: rgba(16, 185, 129, 0.05); padding: 8px 12px; border-radius: 6px; border: 1px solid rgba(16, 185, 129, 0.15); max-height: 80px; overflow-y: auto;" id="side-completed-list">
+                            <p style="font-size: 14px; color: #15803d; line-height: 1.5; background: #f0fdf4; padding: 8px 12px; border-radius: 6px; border: 1.5px solid #a7f3d0; max-height: 80px; overflow-y: auto;" id="side-completed-list">
                                 -
                             </p>
                             
@@ -226,78 +265,23 @@
                 </div>
             </section>
 
-            <!-- Tab 3: Daily Operations Log -->
+            <!-- Tab 3: Daily Operations Log (Project-centric layout) -->
             <section id="tab-daily" class="tab-content">
-                <div class="daily-log-grid">
-                    <!-- Daily Logger form -->
-                    <div class="log-entry-form-card">
-                        <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid var(--border-color);">บันทึกการทำงานรายวัน</h3>
-                        <form id="daily-log-form">
-                            <div class="form-group">
-                                <label for="log-worker">พนักงานผู้ปฏิบัติงาน / ผู้ตรวจ:</label>
-                                <input type="text" id="log-worker" class="form-control" placeholder="ระบุชื่อพนักงาน" required>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="log-project">โปรเจ็กต์:</label>
-                                <select id="log-project" class="form-control" required>
-                                    <!-- Injected by JavaScript -->
-                                </select>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="log-room">เลขห้อง:</label>
-                                <input type="text" id="log-room" class="form-control" placeholder="ระบุเลขห้อง (เช่น 101)" required>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="log-type">ประเภทงาน:</label>
-                                <select id="log-type" class="form-control">
-                                    <option value="lay">งานปูพื้น</option>
-                                    <option value="inspect">งานตรวจสอบความเรียบร้อย</option>
-                                    <option value="fix">งานแก้ไขงานปูพื้น</option>
-                                </select>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="log-status">สถานะหลังปฏิบัติงาน:</label>
-                                <select id="log-status" class="form-control">
-                                    <option value="progress">กำลังปูพื้น</option>
-                                    <option value="inspect">ปูพื้นเสร็จแล้ว/รอการตรวจสอบ</option>
-                                    <option value="completed">ผ่านการตรวจสอบ (เสร็จสิ้น)</option>
-                                    <option value="delayed">ติดปัญหา/ล่าช้ากว่ากำหนด</option>
-                                </select>
-                            </div>
-                            
-                            <div class="form-group" id="log-delay-reason-group" style="display: none;">
-                                <label for="log-delay-reason" style="color: #ef4444;">เหตุผลที่ล่าช้า / ปัญหาที่พบ:</label>
-                                <textarea id="log-delay-reason" class="form-control" rows="3" placeholder="ระบุปัญหาที่ทำให้อล่าช้าหรือปูพื้นไม่เสร็จ"></textarea>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="log-date">วันที่ปฏิบัติงาน:</label>
-                                <input type="date" id="log-date" class="form-control" required>
-                            </div>
-                            
-                            <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 10px;">บันทึกรายงานรายวัน</button>
-                        </form>
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+                    <h3 style="font-size: 16px; font-weight: 600;">รายชื่อพนักงานปฏิบัติงานและประวัติความคืบหน้าของโครงการ</h3>
+                    <div style="display: flex; gap: 8px; align-items: center;">
+                        <select id="filter-log-period" class="form-control" style="padding: 6px 12px; font-size: 13px; width: 220px; border-color: var(--accent);">
+                            <option value="all" selected>แสดงทั้งหมด (Show All)</option>
+                            <option value="today">รายวัน (เฉพาะวันนี้)</option>
+                            <option value="week">รายสัปดาห์ (7 วันล่าสุด)</option>
+                            <option value="month">รายเดือน (ในเดือนนี้)</option>
+                        </select>
                     </div>
+                </div>
 
-                    <!-- Operations Feed List -->
-                    <div style="display: flex; flex-direction: column; gap: 16px;">
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <h3 style="font-size: 16px; font-weight: 600;">ประวัติการส่งรายงานปฏิบัติงาน</h3>
-                            <div style="display: flex; gap: 8px;">
-                                <input type="date" id="filter-log-date" class="form-control" style="padding: 6px 12px; font-size: 12px;">
-                                <button class="btn btn-sm" id="btn-clear-date-filter">ทั้งหมด</button>
-                            </div>
-                        </div>
-                        
-                        <div class="activity-feed-container">
-                            <div class="activity-feed" id="daily-activity-feed">
-                                <!-- Injected by JavaScript -->
-                            </div>
-                        </div>
+                <div class="daily-log-grid">
+                    <div class="activity-feed-container" id="daily-projects-list">
+                        <!-- Injected by JavaScript as Project Cards -->
                     </div>
                 </div>
             </section>
@@ -410,48 +394,24 @@
                     <input type="text" id="project-name" class="form-control" placeholder="เช่น โครงการคอนโด A" required>
                 </div>
                 <div class="form-group">
-                    <label for="project-total-rooms">จำนวนห้องปูพื้นทั้งหมด:</label>
+                    <label for="project-total-rooms">จำนวนห้องปูพื้นเริ่มต้น:</label>
                     <input type="number" id="project-total-rooms" class="form-control" min="1" max="500" value="48" required>
                 </div>
-                <div class="form-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-                    <div>
-                        <label for="project-start-month">เดือนเริ่มต้น:</label>
-                        <select id="project-start-month" class="form-control">
-                            <option value="1">มกราคม</option>
-                            <option value="2">กุมภาพันธ์</option>
-                            <option value="3">มีนาคม</option>
-                            <option value="4">เมษายน</option>
-                            <option value="5">พฤษภาคม</option>
-                            <option value="6">มิถุนายน</option>
-                            <option value="7">กรกฎาคม</option>
-                            <option value="8">สิงหาคม</option>
-                            <option value="9">กันยายน</option>
-                            <option value="10">ตุลาคม</option>
-                            <option value="11">พฤศจิกายน</option>
-                            <option value="12">ธันวาคม</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label for="project-end-month">เดือนที่สิ้นสุด:</label>
-                        <select id="project-end-month" class="form-control">
-                            <option value="1">มกราคม</option>
-                            <option value="2">กุมภาพันธ์</option>
-                            <option value="3">มีนาคม</option>
-                            <option value="4">เมษายน</option>
-                            <option value="5">พฤษภาคม</option>
-                            <option value="6">มิถุนายน</option>
-                            <option value="7">กรกฎาคม</option>
-                            <option value="8">สิงหาคม</option>
-                            <option value="9">กันยายน</option>
-                            <option value="10">ตุลาคม</option>
-                            <option value="11">พฤศจิกายน</option>
-                            <option value="12" selected>ธันวาคม</option>
-                        </select>
+                <div class="form-group">
+                    <label>วันที่เริ่มต้นโครงการ (พ.ศ.):</label>
+                    <div class="date-select-group">
+                        <select id="project-start-day" class="form-control" required></select>
+                        <select id="project-start-month" class="form-control" required></select>
+                        <select id="project-start-year" class="form-control" required></select>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="project-due-date">วันที่กำหนดส่งมอบงาน:</label>
-                    <input type="date" id="project-due-date" class="form-control" required>
+                    <label>วันที่กำหนดเสร็จโครงการ (พ.ศ.):</label>
+                    <div class="date-select-group">
+                        <select id="project-end-day" class="form-control" required></select>
+                        <select id="project-end-month" class="form-control" required></select>
+                        <select id="project-end-year" class="form-control" required></select>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn" onclick="closeModal('modal-add-project')">ยกเลิก</button>
@@ -461,7 +421,48 @@
         </div>
     </div>
 
-    <!-- Modal 2: Room Status Detail Manager -->
+    <!-- Modal 1B: Edit Project Details Dialog -->
+    <div class="modal-overlay" id="modal-edit-project">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">แก้ไขรายละเอียดโปรเจ็กต์</h3>
+                <button class="modal-close" onclick="closeModal('modal-edit-project')">&times;</button>
+            </div>
+            <form id="form-edit-project">
+                <input type="hidden" id="edit-project-id">
+                <div class="form-group">
+                    <label for="edit-project-name">ชื่อโครงการ/โปรเจ็กต์:</label>
+                    <input type="text" id="edit-project-name" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit-project-total-rooms">จำนวนห้องปูพื้น (แก้ไขเพิ่ม/ลดจำนวนห้องได้):</label>
+                    <input type="number" id="edit-project-total-rooms" class="form-control" min="1" max="500" required>
+                </div>
+                <div class="form-group">
+                    <label>วันที่เริ่มต้นโครงการ (พ.ศ.):</label>
+                    <div class="date-select-group">
+                        <select id="edit-project-start-day" class="form-control" required></select>
+                        <select id="edit-project-start-month" class="form-control" required></select>
+                        <select id="edit-project-start-year" class="form-control" required></select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>วันที่กำหนดเสร็จโครงการ (พ.ศ.):</label>
+                    <div class="date-select-group">
+                        <select id="edit-project-end-day" class="form-control" required></select>
+                        <select id="edit-project-end-month" class="form-control" required></select>
+                        <select id="edit-project-end-year" class="form-control" required></select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn" onclick="closeModal('modal-edit-project')">ยกเลิก</button>
+                    <button type="submit" class="btn btn-primary">บันทึกการแก้ไข</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal 2: Room Status Detail Manager (includes Delete Room & Skipped option) -->
     <div class="modal-overlay" id="modal-room-manager">
         <div class="modal-content">
             <div class="modal-header">
@@ -481,6 +482,7 @@
                         <option value="inspect">รอดำเนินการตรวจสอบ (Inspecting)</option>
                         <option value="completed">เสร็จสิ้นเรียบร้อย (Completed)</option>
                         <option value="issue">มีปัญหาขัดข้อง (Issue)</option>
+                        <option value="skipped">ข้าม/ไม่ต้องปูพื้น (Skipped)</option>
                     </select>
                 </div>
                 
@@ -491,7 +493,7 @@
 
                 <div class="form-group">
                     <label for="room-manage-note">บันทึกเพิ่มเติมของห้องนี้:</label>
-                    <textarea id="room-manage-note" class="form-control" rows="2" placeholder="รายละเอียด เช่น ติดตังบัวพื้นแล้ว, รอเคลียร์หน้าดิน"></textarea>
+                    <textarea id="room-manage-note" class="form-control" rows="2" placeholder="รายละเอียด เช่น ติดตั้งบัวพื้นแล้ว, ข้ามพื้นที่เนื่องจากติดตั้งสิ่งอื่นทดแทน"></textarea>
                 </div>
                 
                 <div id="room-manage-issue-panel" style="display: none; border: 1px solid rgba(239, 68, 68, 0.3); background: rgba(239, 68, 68, 0.05); padding: 12px; border-radius: 8px; margin-top: 10px;">
@@ -502,9 +504,75 @@
                     </div>
                 </div>
 
+                <div class="modal-footer" style="justify-content: space-between;">
+                    <button type="button" class="btn btn-danger" id="btn-delete-room" style="font-weight:600;">ลบห้องนี้ออก</button>
+                    <div style="display:flex; gap:12px;">
+                        <button type="button" class="btn" onclick="closeModal('modal-room-manager')">ปิดหน้าต่าง</button>
+                        <button type="submit" class="btn btn-primary">อัปเดตข้อมูล</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal 2B: Add New Room -->
+    <div class="modal-overlay" id="modal-add-room">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">เพิ่มห้องพักใหม่</h3>
+                <button class="modal-close" onclick="closeModal('modal-add-room')">&times;</button>
+            </div>
+            <form id="form-add-room">
+                <div class="form-group">
+                    <label for="add-room-no">เลขที่ห้องพัก:</label>
+                    <input type="text" id="add-room-no" class="form-control" placeholder="เช่น 109, A203" required>
+                </div>
+                <div class="form-group">
+                    <label for="add-room-status">สถานะเริ่มต้น:</label>
+                    <select id="add-room-status" class="form-control">
+                        <option value="pending" selected>ยังไม่ทำ (Pending)</option>
+                        <option value="progress">กำลังปูพื้น (In Progress)</option>
+                        <option value="inspect">รอตรวจสอบ (Inspecting)</option>
+                        <option value="completed">เสร็จสิ้น (Completed)</option>
+                        <option value="skipped">ข้าม/ไม่ต้องปูพื้น (Skipped)</option>
+                    </select>
+                </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn" onclick="closeModal('modal-room-manager')">ปิดหน้าต่าง</button>
-                    <button type="submit" class="btn btn-primary">อัปเดตข้อมูล</button>
+                    <button type="button" class="btn" onclick="closeModal('modal-add-room')">ยกเลิก</button>
+                    <button type="submit" class="btn btn-primary">เพิ่มห้องพัก</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal 2C: Add Daily Progress Log (Project-centric logger) -->
+    <div class="modal-overlay" id="modal-add-daily-log">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="add-daily-log-title">เพิ่มบันทึกรายงานการทำงาน</h3>
+                <button class="modal-close" onclick="closeModal('modal-add-daily-log')">&times;</button>
+            </div>
+            <form id="form-add-daily-log">
+                <input type="hidden" id="add-daily-log-project-id">
+                
+                <div class="form-group">
+                    <label for="add-daily-log-worker">รายชื่อพนักงาน/ช่างผู้เข้าปฏิบัติงานวันนี้:</label>
+                    <input type="text" id="add-daily-log-worker" class="form-control" placeholder="ระบุชื่อพนักงานคั่นด้วยจุลภาค เช่น ช่างวิชัย, ช่างมานะ" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="add-daily-log-note">รายละเอียดการปฏิบัติงานประจำวัน / บันทึกผลงาน:</label>
+                    <textarea id="add-daily-log-note" class="form-control" rows="4" placeholder="ระบุรายละเอียดงานว่าใครทำอะไร ส่วนไหนของโครงการ..." required></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="add-daily-log-date">วันที่เข้าทำงาน:</label>
+                    <input type="date" id="add-daily-log-date" class="form-control" required>
+                </div>
+                
+                <div class="modal-footer">
+                    <button type="button" class="btn" onclick="closeModal('modal-add-daily-log')">ยกเลิก</button>
+                    <button type="submit" class="btn btn-primary">บันทึกข้อมูลรายงาน</button>
                 </div>
             </form>
         </div>
@@ -522,7 +590,7 @@
                 
                 <div class="form-group">
                     <label>รายละเอียดปัญหา:</label>
-                    <div id="issue-resolve-desc" style="font-size: 13px; color: var(--text-secondary); background: rgba(0,0,0,0.2); padding: 12px; border-radius: 8px; border: 1px solid var(--border-color); line-height: 1.5; margin-bottom: 8px;">
+                    <div id="issue-resolve-desc" style="font-size: 13px; color: var(--text-secondary); background: rgba(0,0,0,0.03); padding: 12px; border-radius: 8px; border: 1px solid var(--border-color); line-height: 1.5; margin-bottom: 8px;">
                         -
                     </div>
                 </div>
@@ -537,7 +605,7 @@
 
                 <div class="form-group">
                     <label for="issue-resolve-solution">วิธีการแก้ไขปัญหา / รายละเอียดการแก้:</label>
-                    <textarea id="issue-resolve-solution" class="form-control" rows="3" placeholder="ระบุการปรับปรุงแก้ไข เช่น ดำเนินการเป่าปูนและปูยางยางใหม่เรียบร้อยแล้ว" required></textarea>
+                    <textarea id="issue-resolve-solution" class="form-control" rows="3" placeholder="ระบุการปรับปรุงแก้ไข เช่น ดำเนินการเป่าปูนและปูยางใหม่เรียบร้อยแล้ว" required></textarea>
                 </div>
 
                 <div class="modal-footer">

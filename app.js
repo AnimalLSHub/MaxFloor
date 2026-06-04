@@ -23,19 +23,25 @@ document.addEventListener('DOMContentLoaded', () => {
             {
                 id: "proj-1",
                 name: "Condo Grand Ville (อาคาร A)",
-                startMonth: 4, // April
-                endMonth: 10,  // October
+                startDate: "2026-04-15",
+                endDate: "2026-10-31",
+                startMonth: 4,
+                endMonth: 10,
                 dueDate: "2026-10-31",
                 totalRooms: 48,
-                rooms: [] // Will be populated dynamically on load
+                todayWorkers: "สมพงษ์ แก้วมี, ช่างมานะ, ช่างวิชัย",
+                rooms: []
             },
             {
                 id: "proj-2",
                 name: "Premium Office Tower (ชั้น 5-8)",
-                startMonth: 6, // June
-                endMonth: 12, // December
+                startDate: "2026-06-01",
+                endDate: "2026-12-15",
+                startMonth: 6,
+                endMonth: 12,
                 dueDate: "2026-12-15",
                 totalRooms: 30,
+                todayWorkers: "ช่างสมพงษ์, ช่างสุทัศน์",
                 rooms: []
             }
         ],
@@ -43,74 +49,65 @@ document.addEventListener('DOMContentLoaded', () => {
             {
                 id: "log-1",
                 date: "2026-06-04",
+                time: "09:15",
                 worker: "สมพงษ์ แก้วมี",
                 projectId: "proj-1",
                 projectName: "Condo Grand Ville (อาคาร A)",
-                roomNo: "101",
-                type: "lay",
-                status: "completed",
-                issue: "",
-                time: "09:15"
+                note: "เข้าปูกระเบื้องยางและเก็บขอบยางห้อง 101, 102 เสร็จสิ้นทั้งหมดเรียบร้อยดี"
             },
             {
                 id: "log-2",
                 date: "2026-06-04",
-                worker: "สมพงษ์ แก้วมี",
+                time: "11:30",
+                worker: "ชาตรี ดีเลิศ",
                 projectId: "proj-1",
                 projectName: "Condo Grand Ville (อาคาร A)",
-                roomNo: "102",
-                type: "lay",
-                status: "completed",
-                issue: "",
-                time: "10:45"
+                note: "เตรียมพื้นผิว ปัดกวาดฝุ่นห้อง 105 เพื่อเตรียมส่งมอบตรวจงานปูพื้นในวันถัดไป"
             },
             {
                 id: "log-3",
                 date: "2026-06-04",
-                worker: "สมพงษ์ แก้วมี",
+                time: "14:20",
+                worker: "วิชัย ไกลทอง",
                 projectId: "proj-1",
                 projectName: "Condo Grand Ville (อาคาร A)",
-                roomNo: "103",
-                type: "lay",
-                status: "completed",
-                issue: "",
-                time: "14:20"
+                note: "ช่างวิชัยเข้าตรวจสอบห้อง 106 พบปัญหาความชื้นคอนกรีตสูง 9.5% ได้แจ้งกรรมการตรวจเพื่อซ่อมบำรุงท่อน้ำดี"
             },
             {
                 id: "log-4",
                 date: "2026-06-04",
+                time: "14:30",
                 worker: "มานะ อดทน",
                 projectId: "proj-1",
                 projectName: "Condo Grand Ville (อาคาร A)",
-                roomNo: "104",
-                type: "lay",
-                status: "inspect",
-                issue: "",
-                time: "15:00"
+                note: "ช่างมานะปูเตรียมบอร์ดรองพื้นห้อง 104 และทากาวโพลียูรีเทน"
             },
             {
                 id: "log-5",
-                date: "2026-06-04",
-                worker: "ชาตรี ดีเลิศ",
-                projectId: "proj-1",
-                projectName: "Condo Grand Ville (อาคาร A)",
-                roomNo: "105",
-                type: "lay",
-                status: "progress",
-                issue: "",
-                time: "11:30"
+                date: "2026-06-03",
+                time: "10:00",
+                worker: "ช่างสมพงษ์",
+                projectId: "proj-2",
+                projectName: "Premium Office Tower (ชั้น 5-8)",
+                note: "เริ่มเข้าหน้างาน ตรวจสอบพื้นที่ชั้น 5 เพื่อเตรียมขนย้ายเครื่องมือและวัสดุแผ่นปูพื้น"
             },
             {
                 id: "log-6",
                 date: "2026-06-04",
-                worker: "วิชัย ไกลทอง",
-                projectId: "proj-1",
-                projectName: "Condo Grand Ville (อาคาร A)",
-                roomNo: "106",
-                type: "lay",
-                status: "delayed",
-                issue: "ความชื้นปูนรองพื้นมีค่า 9.5% เกินเกณฑ์มาตรฐาน เนื่องจากตรวจพบท่อน้ำระบบชำรุดใต้พื้น ต้องรอช่างแก้ไข",
-                time: "10:00"
+                time: "08:30",
+                worker: "ช่างสุทัศน์",
+                projectId: "proj-2",
+                projectName: "Premium Office Tower (ชั้น 5-8)",
+                note: "ทากาวขาวอิมัลชันและปูแผ่นไวนิลลายไม้ห้องพัก 501 โซน A เสร็จสิ้นเรียบร้อยดี"
+            },
+            {
+                id: "log-7",
+                date: "2026-06-04",
+                time: "13:00",
+                worker: "ช่างสมพงษ์",
+                projectId: "proj-2",
+                projectName: "Premium Office Tower (ชั้น 5-8)",
+                note: "ติดตั้งคิ้วและตัวจบขอบลามิเนตระหว่างห้อง 501 และโถงทางเดิน เสร็จสิ้น"
             }
         ],
         issues: [
@@ -138,6 +135,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 solution: "สกัดแต่งเศษปูน ปรับระดับรองพื้นรอบแอ่งลึกด้วยปูนปรับระดับแห้งเร็ว (Self-Leveling Underlayment)",
                 resolveDate: "2026-06-03"
             }
+        ],
+        workers: [
+            "สมพงษ์ แก้วมี",
+            "ช่างมานะ",
+            "ช่างวิชัย",
+            "ชาตรี ดีเลิศ",
+            "วิชัย ไกลทอง",
+            "มานะ อดทน",
+            "ช่างสมพงษ์",
+            "ช่างสุทัศน์"
         ]
     };
 
@@ -145,13 +152,127 @@ document.addEventListener('DOMContentLoaded', () => {
     let db = {
         projects: [],
         logs: [],
-        issues: []
+        issues: [],
+        workers: []
     };
 
     // Current app state pointers
     let activeTab = "tab-plan";
     let selectedProjectId = "";
     let roomFilter = "all";
+    let activeLogProjectId = ""; // pointer for daily log modal
+    let isBulkMode = false;
+    let selectedRoomsForDelete = [];
+
+    // Robust local YYYY-MM-DD date string generator (bugfix timezone offset)
+    function getLocalDateStr() {
+        const d = new Date();
+        const year = d.getFullYear();
+        const month = String(d.getMonth() + 1).padStart(2, '0');
+        const day = String(d.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    }
+
+    const THAI_MONTHS = [
+        "มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน",
+        "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"
+    ];
+
+    // Populates Day, Month, and Thai B.E. Year dropdowns
+    function initDateDropdowns(dayId, monthId, yearId) {
+        const daySelect = document.getElementById(dayId);
+        const monthSelect = document.getElementById(monthId);
+        const yearSelect = document.getElementById(yearId);
+
+        if (!daySelect || !monthSelect || !yearSelect) return;
+
+        // 1. Populate Months
+        monthSelect.innerHTML = "";
+        THAI_MONTHS.forEach((mName, index) => {
+            const opt = document.createElement('option');
+            opt.value = index + 1;
+            opt.textContent = mName;
+            monthSelect.appendChild(opt);
+        });
+
+        // 2. Populate Years (B.E. 2565 to 2580, which corresponds to C.E. 2022 to 2037)
+        yearSelect.innerHTML = "";
+        for (let y = 2565; y <= 2580; y++) {
+            const opt = document.createElement('option');
+            opt.value = y;
+            opt.textContent = y;
+            yearSelect.appendChild(opt);
+        }
+
+        // 3. Attach change event listeners to month & year to dynamically adjust day count
+        monthSelect.addEventListener('change', () => adjustDays(dayId, monthId, yearId));
+        yearSelect.addEventListener('change', () => adjustDays(dayId, monthId, yearId));
+
+        // 4. Initial days adjustment
+        adjustDays(dayId, monthId, yearId);
+    }
+
+    // Dynamic Day Adjuster based on Month and Year
+    function adjustDays(dayId, monthId, yearId) {
+        const daySelect = document.getElementById(dayId);
+        const monthSelect = document.getElementById(monthId);
+        const yearSelect = document.getElementById(yearId);
+
+        if (!daySelect || !monthSelect || !yearSelect) return;
+
+        const month = parseInt(monthSelect.value) || 1;
+        const yearBE = parseInt(yearSelect.value) || (new Date().getFullYear() + 543);
+        const yearCE = yearBE - 543;
+
+        // Get total days in month
+        const totalDays = new Date(yearCE, month, 0).getDate();
+        const prevSelected = parseInt(daySelect.value) || 1;
+
+        daySelect.innerHTML = "";
+        for (let d = 1; d <= totalDays; d++) {
+            const opt = document.createElement('option');
+            opt.value = d;
+            opt.textContent = d;
+            daySelect.appendChild(opt);
+        }
+
+        // Keep previously selected day, but cap it at the maximum days in this month
+        daySelect.value = Math.min(prevSelected, totalDays);
+    }
+
+    // Helper to get YYYY-MM-DD string from dropdown selectors
+    function getDateStringFromDropdowns(dayId, monthId, yearId) {
+        const day = document.getElementById(dayId).value;
+        const month = document.getElementById(monthId).value;
+        const yearBE = document.getElementById(yearId).value;
+        const yearCE = parseInt(yearBE) - 543;
+        return `${yearCE}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+    }
+
+    // Helper to set dropdown selectors from YYYY-MM-DD string
+    function setDropdownsFromDateString(dateStr, dayId, monthId, yearId) {
+        if (!dateStr) return;
+        const parts = dateStr.split('-');
+        if (parts.length !== 3) return;
+
+        const yearCE = parseInt(parts[0]);
+        const month = parseInt(parts[1]);
+        const day = parseInt(parts[2]);
+        const yearBE = yearCE + 543;
+
+        const daySelect = document.getElementById(dayId);
+        const monthSelect = document.getElementById(monthId);
+        const yearSelect = document.getElementById(yearId);
+
+        if (monthSelect) monthSelect.value = month;
+        if (yearSelect) yearSelect.value = yearBE;
+
+        // Adjust day options since month/year has changed
+        adjustDays(dayId, monthId, yearId);
+
+        if (daySelect) daySelect.value = day;
+    }
+
 
     // Dynamic Room Numbers Generator
     function generateRoomList(totalRooms) {
@@ -191,67 +312,89 @@ document.addEventListener('DOMContentLoaded', () => {
             seedDefaultDB();
         }
         
-        // Safety checks to ensure rooms exist
+        // Safety checks to ensure fields exist
+        if (!db.projects) db.projects = [];
+        if (!db.logs) db.logs = [];
+        if (!db.issues) db.issues = [];
+        if (!db.workers || db.workers.length === 0) {
+            db.workers = [
+                "สมพงษ์ แก้วมี",
+                "ช่างมานะ",
+                "ช่างวิชัย",
+                "ชาตรี ดีเลิศ",
+                "วิชัย ไกลทอง",
+                "มานะ อดทน"
+            ];
+        }
+
         db.projects.forEach(proj => {
             if (!proj.rooms || proj.rooms.length === 0) {
                 proj.rooms = generateRoomList(proj.totalRooms);
             }
+            if (!proj.startDate) {
+                proj.startDate = `2026-${String(proj.startMonth).padStart(2, '0')}-01`;
+            }
+            if (!proj.endDate) {
+                proj.endDate = `2026-${String(proj.endMonth).padStart(2, '0')}-28`;
+            }
+            if (proj.todayWorkers === undefined) {
+                proj.todayWorkers = "";
+            }
         });
         
         // Seed specific completed rooms for Project 1 (Rooms 101, 102, 103 completed)
-        // Project 1 details per requirement
         const proj1 = db.projects.find(p => p.id === "proj-1");
         if (proj1 && proj1.rooms.length > 0) {
-            // Room 101
-            if (proj1.rooms.find(r => r.roomNo === "101").status === 'pending') {
-                proj1.rooms.find(r => r.roomNo === "101").status = 'completed';
-                proj1.rooms.find(r => r.roomNo === "101").worker = 'สมพงษ์ แก้วมี';
-                proj1.rooms.find(r => r.roomNo === "101").lastUpdated = '2026-06-04';
+            const r101 = proj1.rooms.find(r => r.roomNo === "101");
+            if (r101 && r101.status === 'pending') {
+                r101.status = 'completed';
+                r101.worker = 'สมพงษ์ แก้วมี';
+                r101.lastUpdated = '2026-06-04';
             }
-            // Room 102
-            if (proj1.rooms.find(r => r.roomNo === "102").status === 'pending') {
-                proj1.rooms.find(r => r.roomNo === "102").status = 'completed';
-                proj1.rooms.find(r => r.roomNo === "102").worker = 'สมพงษ์ แก้วมี';
-                proj1.rooms.find(r => r.roomNo === "102").lastUpdated = '2026-06-04';
+            const r102 = proj1.rooms.find(r => r.roomNo === "102");
+            if (r102 && r102.status === 'pending') {
+                r102.status = 'completed';
+                r102.worker = 'สมพงษ์ แก้วมี';
+                r102.lastUpdated = '2026-06-04';
             }
-            // Room 103
-            if (proj1.rooms.find(r => r.roomNo === "103").status === 'pending') {
-                proj1.rooms.find(r => r.roomNo === "103").status = 'completed';
-                proj1.rooms.find(r => r.roomNo === "103").worker = 'สมพงษ์ แก้วมี';
-                proj1.rooms.find(r => r.roomNo === "103").lastUpdated = '2026-06-04';
+            const r103 = proj1.rooms.find(r => r.roomNo === "103");
+            if (r103 && r103.status === 'pending') {
+                r103.status = 'completed';
+                r103.worker = 'สมพงษ์ แก้วมี';
+                r103.lastUpdated = '2026-06-04';
             }
-            // Room 104
-            if (proj1.rooms.find(r => r.roomNo === "104").status === 'pending') {
-                proj1.rooms.find(r => r.roomNo === "104").status = 'inspect';
-                proj1.rooms.find(r => r.roomNo === "104").worker = 'มานะ อดทน';
-                proj1.rooms.find(r => r.roomNo === "104").lastUpdated = '2026-06-04';
+            const r104 = proj1.rooms.find(r => r.roomNo === "104");
+            if (r104 && r104.status === 'pending') {
+                r104.status = 'inspect';
+                r104.worker = 'มานะ อดทน';
+                r104.lastUpdated = '2026-06-04';
             }
-            // Room 105
-            if (proj1.rooms.find(r => r.roomNo === "105").status === 'pending') {
-                proj1.rooms.find(r => r.roomNo === "105").status = 'progress';
-                proj1.rooms.find(r => r.roomNo === "105").worker = 'ชาตรี ดีเลิศ';
-                proj1.rooms.find(r => r.roomNo === "105").lastUpdated = '2026-06-04';
+            const r105 = proj1.rooms.find(r => r.roomNo === "105");
+            if (r105 && r105.status === 'pending') {
+                r105.status = 'progress';
+                r105.worker = 'ชาตรี ดีเลิศ';
+                r105.lastUpdated = '2026-06-04';
             }
-            // Room 106
-            if (proj1.rooms.find(r => r.roomNo === "106").status === 'pending') {
-                proj1.rooms.find(r => r.roomNo === "106").status = 'issue';
-                proj1.rooms.find(r => r.roomNo === "106").worker = 'วิชัย ไกลทอง';
-                proj1.rooms.find(r => r.roomNo === "106").note = 'ความชื้นสะสมรองพื้นสูง 9.5%';
-                proj1.rooms.find(r => r.roomNo === "106").lastUpdated = '2026-06-04';
+            const r106 = proj1.rooms.find(r => r.roomNo === "106");
+            if (r106 && r106.status === 'pending') {
+                r106.status = 'issue';
+                r106.worker = 'วิชัย ไกลทอง';
+                r106.note = 'ความชื้นสะสมรองพื้นสูง 9.5%';
+                r106.lastUpdated = '2026-06-04';
             }
         }
         
-        // Project 2 seed updates
         const proj2 = db.projects.find(p => p.id === "proj-2");
         if (proj2 && proj2.rooms.length > 0) {
-            if (proj2.rooms.find(r => r.roomNo === "101").status === 'pending') {
-                proj2.rooms.find(r => r.roomNo === "101").status = 'completed';
-                proj2.rooms.find(r => r.roomNo === "101").worker = 'สมพงษ์ แก้วมี';
-                proj2.rooms.find(r => r.roomNo === "101").lastUpdated = '2026-06-03';
+            const r101_2 = proj2.rooms.find(r => r.roomNo === "101");
+            if (r101_2 && r101_2.status === 'pending') {
+                r101_2.status = 'completed';
+                r101_2.worker = 'สมพงษ์ แก้วมี';
+                r101_2.lastUpdated = '2026-06-03';
             }
         }
 
-        saveDB(false); // Silent save just in case seeds run
+        saveDB(false);
         
         if (db.projects.length > 0 && !selectedProjectId) {
             selectedProjectId = db.projects[0].id;
@@ -259,7 +402,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function seedDefaultDB() {
-        db = JSON.parse(JSON.stringify(DEFAULT_SEED_DATA)); // Deep clone
+        db = JSON.parse(JSON.stringify(DEFAULT_SEED_DATA));
         db.projects.forEach(proj => {
             proj.rooms = generateRoomList(proj.totalRooms);
         });
@@ -267,6 +410,19 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function saveDB(render = true) {
+        if (!db.projects) db.projects = [];
+        if (!db.logs) db.logs = [];
+        if (!db.issues) db.issues = [];
+        if (!db.workers || !Array.isArray(db.workers) || db.workers.length === 0) {
+            db.workers = [
+                "สมพงษ์ แก้วมี",
+                "ช่างมานะ",
+                "ช่างวิชัย",
+                "ชาตรี ดีเลิศ",
+                "วิชัย ไกลทอง",
+                "มานะ อดทน"
+            ];
+        }
         localStorage.setItem('floortech_db', JSON.stringify(db));
         if (render) {
             updateDashboardMetrics();
@@ -276,11 +432,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Set today's date in Date fields on forms
     function setTodayDates() {
-        const todayStr = new Date().toISOString().split('T')[0];
-        const logDateInput = document.getElementById('log-date');
-        const projDueDateInput = document.getElementById('project-due-date');
-        if (logDateInput) logDateInput.value = todayStr;
-        if (projDueDateInput) projDueDateInput.value = todayStr;
+        const todayStr = getLocalDateStr();
+        
+        // Populate Add Project selectors with today's date
+        setDropdownsFromDateString(todayStr, 'project-start-day', 'project-start-month', 'project-start-year');
+        setDropdownsFromDateString(todayStr, 'project-end-day', 'project-end-month', 'project-end-year');
+        
+        const addLogDate = document.getElementById('add-daily-log-date');
+        if (addLogDate) addLogDate.value = todayStr;
     }
 
     // ==========================================
@@ -295,19 +454,18 @@ document.addEventListener('DOMContentLoaded', () => {
         item.addEventListener('click', (e) => {
             e.preventDefault();
             
-            // Remove active from all items
             navItems.forEach(nav => nav.classList.remove('active'));
-            // Add active to current
             item.classList.add('active');
             
-            // Hide all tab sections
             document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
             
-            // Show current tab section
             activeTab = item.getAttribute('data-tab');
             document.getElementById(activeTab).classList.add('active');
             
-            // Update Page Header details
+            // Exit bulk delete mode on tab switch
+            isBulkMode = false;
+            selectedRoomsForDelete = [];
+            
             updatePageHeader();
             renderActiveTab();
         });
@@ -324,22 +482,22 @@ document.addEventListener('DOMContentLoaded', () => {
             headerBtn.style.display = "flex";
             headerBtn.querySelector('span').textContent = "อัพเดทห้องพัก";
             
-            // Click to trigger room manager on selected project's first room or open general modal
             headerBtn.onclick = () => {
                 const currentProj = db.projects.find(p => p.id === selectedProjectId);
                 if (currentProj && currentProj.rooms.length > 0) {
-                    // Populate and open with first room
                     openRoomManager(currentProj.id, currentProj.rooms[0].roomNo);
+                } else {
+                    alert("ไม่พบข้อมูลห้องพัก กรุณาเลือกโปรเจ็กต์ที่มีห้องพักหรือทำการเพิ่มห้องพัก");
                 }
             };
         } else if (activeTab === "tab-daily") {
-            headerTitle.textContent = "การปฏิบัติงานรายวัน";
+            headerTitle.textContent = "การปฏิบัติงานและคนงานเข้าปฏิบัติหน้าที่รายวัน";
             headerBtn.style.display = "none";
         } else if (activeTab === "tab-issues") {
             headerTitle.textContent = "การจัดการปัญหาที่เกิดขึ้น";
             headerBtn.style.display = "none";
         } else if (activeTab === "tab-data") {
-            headerTitle.textContent = "จัดการฐานข้อมูลและตั้งค่า";
+            headerTitle.textContent = "จัดการข้อมูลระบบและตั้งค่า";
             headerBtn.style.display = "none";
         }
     }
@@ -369,17 +527,63 @@ document.addEventListener('DOMContentLoaded', () => {
         let totalRooms = 0;
         let completedRooms = 0;
         db.projects.forEach(p => {
-            totalRooms += p.totalRooms;
+            totalRooms += p.rooms.length;
             completedRooms += p.rooms.filter(r => r.status === 'completed').length;
         });
 
         const pendingIssues = db.issues.filter(i => i.status === 'pending').length;
 
-        // Inject into HTML elements
         document.getElementById('stat-total-projects').textContent = totalProjects;
         document.getElementById('stat-total-rooms').textContent = totalRooms;
         document.getElementById('stat-completed-rooms').textContent = completedRooms;
         document.getElementById('stat-pending-issues').textContent = pendingIssues;
+    }
+
+    function initTimelineYearDropdown() {
+        const yearSelect = document.getElementById('select-timeline-year');
+        if (!yearSelect) return;
+
+        // Get years from existing projects
+        const projectYears = new Set();
+        db.projects.forEach(proj => {
+            if (proj.startDate) {
+                const year = new Date(proj.startDate).getFullYear();
+                if (!isNaN(year)) projectYears.add(year);
+            }
+            if (proj.endDate) {
+                const year = new Date(proj.endDate).getFullYear();
+                if (!isNaN(year)) projectYears.add(year);
+            }
+        });
+
+        // Set default range B.E. 2567 to 2575 (2024 to 2032 C.E.)
+        const defaultStartCE = 2024;
+        const defaultEndCE = 2032;
+        for (let y = defaultStartCE; y <= defaultEndCE; y++) {
+            projectYears.add(y);
+        }
+
+        // Convert to sorted array
+        const sortedYears = Array.from(projectYears).sort((a, b) => a - b);
+
+        const prevValue = yearSelect.value;
+        yearSelect.innerHTML = "";
+        sortedYears.forEach(y => {
+            const opt = document.createElement('option');
+            opt.value = y;
+            opt.textContent = y + 543; // Display as B.E.
+            yearSelect.appendChild(opt);
+        });
+
+        // Default to current year (2026)
+        const currentYear = new Date().getFullYear();
+        if (prevValue && sortedYears.includes(parseInt(prevValue))) {
+            yearSelect.value = prevValue;
+        } else if (sortedYears.includes(currentYear)) {
+            yearSelect.value = currentYear;
+        } else {
+            yearSelect.value = sortedYears[0];
+        }
     }
 
     // RENDER TAB 1: Plan and Timelines
@@ -390,48 +594,139 @@ document.addEventListener('DOMContentLoaded', () => {
         container.innerHTML = "";
         tbody.innerHTML = "";
 
+        // Populate and sync the year filter dropdown
+        initTimelineYearDropdown();
+
         if (db.projects.length === 0) {
             container.innerHTML = `<div style="text-align: center; color: var(--text-muted); padding: 20px;">ไม่มีโปรเจ็กต์ในระบบในขณะนี้ กด "เพิ่มโปรเจ็กต์ใหม่" ด้านบนเพื่อเริ่มสร้าง</div>`;
             tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--text-muted);">ไม่มีข้อมูลโครงการ</td></tr>`;
             return;
         }
 
+        // Fetch active view option (monthly or quarterly) and selected year
+        const timelineView = document.getElementById('select-timeline-view') ? document.getElementById('select-timeline-view').value : 'monthly';
+        const yearSelect = document.getElementById('select-timeline-year');
+        const selectedYear = yearSelect && yearSelect.value ? parseInt(yearSelect.value) : new Date().getFullYear();
+
+        const columnsList = [];
+        if (timelineView === 'quarterly') {
+            for (let q = 1; q <= 4; q++) {
+                columnsList.push({ year: selectedYear, quarter: q });
+            }
+        } else {
+            for (let m = 0; m <= 11; m++) {
+                columnsList.push({ year: selectedYear, month: m });
+            }
+        }
+
+        const numCols = columnsList.length;
+
+        // Update Timeline Header Grid Columns
+        const monthsHeader = document.getElementById('timeline-months-header');
+        if (monthsHeader) {
+            monthsHeader.style.gridTemplateColumns = `repeat(${numCols}, 1fr)`;
+            monthsHeader.innerHTML = "";
+            const THAI_SHORT_MONTHS = ["ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.", "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."];
+            columnsList.forEach(col => {
+                const div = document.createElement('div');
+                const yearBEShort = String((col.year + 543) % 100).padStart(2, '0');
+                if (timelineView === 'quarterly') {
+                    div.textContent = `Q${col.quarter}/${yearBEShort}`;
+                } else {
+                    div.textContent = `${THAI_SHORT_MONTHS[col.month]} ${yearBEShort}`;
+                }
+                monthsHeader.appendChild(div);
+            });
+        }
+
         db.projects.forEach(proj => {
-            // Calculation completion progress
             const completed = proj.rooms.filter(r => r.status === 'completed').length;
-            const progressPct = proj.totalRooms > 0 ? Math.round((completed / proj.totalRooms) * 100) : 0;
+            const total = proj.rooms.length;
+            const nonSkipped = proj.rooms.filter(r => r.status !== 'skipped').length;
+            const progressPct = nonSkipped > 0 ? Math.round((completed / nonSkipped) * 100) : 0;
 
-            // Month lists mapping
-            const thaiMonths = ["ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.", "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."];
-            const startText = thaiMonths[proj.startMonth - 1];
-            const endText = thaiMonths[proj.endMonth - 1];
+            const THAI_SHORT_MONTHS = ["ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.", "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."];
+            
+            // Format start and end date labels
+            const pStart = new Date(proj.startDate);
+            const pEnd = new Date(proj.endDate);
+            
+            const startMonthStr = !isNaN(pStart.getTime()) ? `${THAI_SHORT_MONTHS[pStart.getMonth()]} ${String((pStart.getFullYear() + 543) % 100).padStart(2, '0')}` : "-";
+            const endMonthStr = !isNaN(pEnd.getTime()) ? `${THAI_SHORT_MONTHS[pEnd.getMonth()]} ${String((pEnd.getFullYear() + 543) % 100).padStart(2, '0')}` : "-";
 
-            // 1. Draw Gantt Row
+            // Check overlap with selectedYear
+            const yearStart = new Date(selectedYear, 0, 1);
+            const yearEnd = new Date(selectedYear, 11, 31);
+            const hasOverlap = (!isNaN(pStart.getTime()) && !isNaN(pEnd.getTime())) && (pStart <= yearEnd && pEnd >= yearStart);
+
+            let startIndex = 0;
+            let endIndex = columnsList.length - 1;
+
+            if (hasOverlap) {
+                if (timelineView === 'quarterly') {
+                    if (pStart.getFullYear() < selectedYear) {
+                        startIndex = 0;
+                    } else {
+                        startIndex = Math.floor(pStart.getMonth() / 3);
+                    }
+                    if (pEnd.getFullYear() > selectedYear) {
+                        endIndex = 3;
+                    } else {
+                        endIndex = Math.floor(pEnd.getMonth() / 3);
+                    }
+                } else {
+                    if (pStart.getFullYear() < selectedYear) {
+                        startIndex = 0;
+                    } else {
+                        startIndex = pStart.getMonth();
+                    }
+                    if (pEnd.getFullYear() > selectedYear) {
+                        endIndex = 11;
+                    } else {
+                        endIndex = pEnd.getMonth();
+                    }
+                }
+                
+                if (endIndex < startIndex) endIndex = startIndex;
+            }
+
+            const colStart = startIndex + 1;
+            const colEnd = endIndex + 2;
+
+            // Gantt Row
             const rowDiv = document.createElement('div');
             rowDiv.className = 'timeline-row';
             
-            // Grid columns start/end. Since months are 1-12, grid columns are 1 to 13.
-            // Let's compute grid styles for duration bar
-            const colStart = proj.startMonth;
-            const colEnd = proj.endMonth + 1; // span ends at start of next month column
-            
-            rowDiv.innerHTML = `
-                <div class="project-meta-info">
-                    <span class="project-meta-name" data-id="${proj.id}">${proj.name}</span>
-                    <span class="project-meta-duration">${startText} - ${endText} | เสร็จสิ้น ${progressPct}%</span>
-                </div>
-                <div class="timeline-bar-wrapper">
-                    <div class="timeline-bar" style="grid-column: ${colStart} / ${colEnd};" data-id="${proj.id}">
-                        <div class="timeline-bar-progress" style="width: ${progressPct}%"></div>
-                        <div class="timeline-bar-text">${progressPct}% (${completed}/${proj.totalRooms} ห้อง)</div>
+            if (!hasOverlap) {
+                const yearBE = selectedYear + 543;
+                rowDiv.innerHTML = `
+                    <div class="project-meta-info">
+                        <span class="project-meta-name" data-id="${proj.id}">${proj.name}</span>
+                        <span class="project-meta-duration">${startMonthStr} - ${endMonthStr} | เสร็จสิ้น ${progressPct}%</span>
                     </div>
-                </div>
-            `;
+                    <div class="timeline-bar-wrapper" style="grid-template-columns: 1fr; background: #e2e8f0; border-style: dashed; display: flex; justify-content: center; align-items: center; height: 36px; padding: 0 12px;">
+                        <span style="font-size: 11px; color: var(--text-muted); text-align: center; font-weight: 600;">
+                            โครงการอยู่นอกช่วงเวลาปี พ.ศ. ${yearBE}
+                        </span>
+                    </div>
+                `;
+            } else {
+                rowDiv.innerHTML = `
+                    <div class="project-meta-info">
+                        <span class="project-meta-name" data-id="${proj.id}">${proj.name}</span>
+                        <span class="project-meta-duration">${startMonthStr} - ${endMonthStr} | เสร็จสิ้น ${progressPct}%</span>
+                    </div>
+                    <div class="timeline-bar-wrapper" style="grid-template-columns: repeat(${numCols}, 1fr);">
+                        <div class="timeline-bar" style="grid-column: ${colStart} / ${colEnd};" data-id="${proj.id}">
+                            <div class="timeline-bar-progress" style="width: ${progressPct}%"></div>
+                            <div class="timeline-bar-text">${progressPct}% (${completed}/${total} ห้อง)</div>
+                        </div>
+                    </div>
+                `;
+            }
             
-            // Add click listener to navigate to this project's room grid
             const clickHandler = () => {
                 selectedProjectId = proj.id;
-                // Switch active tab programmatically
                 navItems.forEach(n => {
                     if (n.getAttribute('data-tab') === "tab-rooms") {
                         n.click();
@@ -439,39 +734,55 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             };
             rowDiv.querySelector('.project-meta-name').addEventListener('click', clickHandler);
-            rowDiv.querySelector('.timeline-bar').addEventListener('click', clickHandler);
+            if (hasOverlap) {
+                rowDiv.querySelector('.timeline-bar').addEventListener('click', clickHandler);
+            }
 
             container.appendChild(rowDiv);
 
-            // 2. Draw Table Rows
+            // Table Rows
             const tr = document.createElement('tr');
             
-            // Date formatting
-            const dateParts = proj.dueDate.split('-');
-            const displayDueDate = dateParts.length === 3 ? `${dateParts[2]}/${dateParts[1]}/${parseInt(dateParts[0])+543}` : proj.dueDate; // TH format
+            // Format start and end date displays (Day/Month/Year TH)
+            const parseDateTH = (dateStr) => {
+                if (!dateStr) return "-";
+                const p = dateStr.split('-');
+                if (p.length !== 3) return dateStr;
+                return `${p[2]}/${p[1]}/${parseInt(p[0]) + 543}`;
+            };
+            
+            const displayStart = parseDateTH(proj.startDate);
+            const displayEnd = parseDateTH(proj.endDate);
 
             tr.innerHTML = `
                 <td><strong style="color: var(--accent); cursor:pointer;" class="proj-link">${proj.name}</strong></td>
-                <td>${proj.totalRooms} ห้อง</td>
-                <td>${startText} - ${endText}</td>
-                <td>${displayDueDate}</td>
+                <td>${total} ห้อง</td>
+                <td>${displayStart} ถึง ${displayEnd}</td>
+                <td>${displayEnd}</td>
                 <td>
                     <div style="display:flex; align-items:center; gap:8px;">
-                        <div style="flex-grow:1; background:rgba(255,255,255,0.05); height:8px; border-radius:4px; overflow:hidden; min-width:80px;">
-                            <div style="width:${progressPct}%; background:linear-gradient(to right, #10b981, #06b6d4); height:100%;"></div>
+                        <div style="flex-grow:1; background:#e2e8f0; height:8px; border-radius:4px; overflow:hidden; min-width:80px; border: 1px solid var(--border-color);">
+                            <div style="width:${progressPct}%; background-color: #38bdf8; height:100%;"></div>
                         </div>
                         <span>${progressPct}%</span>
                     </div>
                 </td>
                 <td>
-                    <button class="btn btn-sm btn-danger btn-delete-project" data-id="${proj.id}">ลบ</button>
+                    <div style="display:flex; gap:8px;">
+                        <button class="btn btn-sm btn-edit-project-row" data-id="${proj.id}">แก้ไข</button>
+                        <button class="btn btn-sm btn-danger btn-delete-project" data-id="${proj.id}">ลบ</button>
+                    </div>
                 </td>
             `;
 
             tr.querySelector('.proj-link').addEventListener('click', clickHandler);
+            tr.querySelector('.btn-edit-project-row').addEventListener('click', (e) => {
+                e.stopPropagation();
+                openEditProjectModal(proj.id);
+            });
             tr.querySelector('.btn-delete-project').addEventListener('click', (e) => {
                 e.stopPropagation();
-                if (confirm(`คุณต้องการลบโปรเจ็กต์ "${proj.name}" และข้อมูลที่เกี่ยวข้องทั้งหมดใช่หรือไม่? (การดำเนินการนี้ไม่สามารถย้อนกลับได้)`)) {
+                if (confirm(`คุณต้องการลบโปรเจ็กต์ "${proj.name}" และข้อมูลที่เกี่ยวข้องทั้งหมดใช่หรือไม่?`)) {
                     deleteProject(proj.id);
                 }
             });
@@ -485,7 +796,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const select = document.getElementById('room-project-select');
         const gridContainer = document.getElementById('rooms-grid-container');
         
-        // 1. Populate Dropdown Select
         const currentSelVal = select.value || selectedProjectId;
         select.innerHTML = "";
         
@@ -497,8 +807,13 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('side-progress-ratio').textContent = "0 จาก 0 ห้อง";
             document.getElementById('side-completed-list').textContent = "-";
             document.getElementById('side-remaining-list').textContent = "-";
+            document.getElementById('btn-edit-current-project').style.display = "none";
+            document.getElementById('btn-add-room-trigger').style.display = "none";
             return;
         }
+
+        document.getElementById('btn-edit-current-project').style.display = "inline-flex";
+        document.getElementById('btn-add-room-trigger').style.display = "inline-flex";
 
         db.projects.forEach(proj => {
             const opt = document.createElement('option');
@@ -508,29 +823,27 @@ document.addEventListener('DOMContentLoaded', () => {
             select.appendChild(opt);
         });
 
-        // Set state pointer
         if (select.value) {
             selectedProjectId = select.value;
         }
 
-        // Fetch selected project object
         const activeProj = db.projects.find(p => p.id === selectedProjectId);
         if (!activeProj) return;
 
-        // 2. Render Side Dashboard Stats
         document.getElementById('side-panel-project-name').textContent = activeProj.name;
         
         const total = activeProj.rooms.length;
         const completed = activeProj.rooms.filter(r => r.status === 'completed').length;
-        const pct = total > 0 ? Math.round((completed / total) * 100) : 0;
+        
+        const nonSkippedTotal = activeProj.rooms.filter(r => r.status !== 'skipped').length;
+        const pct = nonSkippedTotal > 0 ? Math.round((completed / nonSkippedTotal) * 100) : 0;
 
         document.getElementById('side-progress-percent').textContent = `${pct}%`;
-        document.getElementById('side-progress-ratio').textContent = `ปูพื้นเสร็จแล้ว ${completed} จาก ${total} ห้อง`;
+        document.getElementById('side-progress-ratio').textContent = `ปูเสร็จแล้ว ${completed} จาก ${nonSkippedTotal} ห้อง (ไม่รวมข้าม)`;
 
-        // Update circular SVG donut chart
+        // Update SVG donut
         const donutCircle = document.getElementById('side-progress-donut');
         if (donutCircle) {
-            // Circumference of r=60 circle is 2 * PI * 60 = ~377
             const offset = 377 - (377 * pct) / 100;
             donutCircle.style.strokeDashoffset = offset;
         }
@@ -542,7 +855,8 @@ document.addEventListener('DOMContentLoaded', () => {
             progress: activeProj.rooms.filter(r => r.status === 'progress').length,
             inspect: activeProj.rooms.filter(r => r.status === 'inspect').length,
             completed: completed,
-            issue: activeProj.rooms.filter(r => r.status === 'issue').length
+            issue: activeProj.rooms.filter(r => r.status === 'issue').length,
+            skipped: activeProj.rooms.filter(r => r.status === 'skipped').length
         };
 
         Object.keys(counts).forEach(key => {
@@ -554,21 +868,34 @@ document.addEventListener('DOMContentLoaded', () => {
         const completedRoomsList = activeProj.rooms.filter(r => r.status === 'completed').map(r => r.roomNo);
         document.getElementById('side-completed-list').textContent = completedRoomsList.length > 0 ? completedRoomsList.join(', ') : "ยังไม่มีห้องที่ปูพื้นเสร็จสิ้น";
 
-        const remainingRoomsList = activeProj.rooms.filter(r => r.status !== 'completed').map(r => r.roomNo);
+        const remainingRoomsList = activeProj.rooms.filter(r => r.status === 'pending' || r.status === 'progress' || r.status === 'inspect').map(r => r.roomNo);
         document.getElementById('side-remaining-list').textContent = remainingRoomsList.length > 0 ? remainingRoomsList.join(', ') : "ปูพื้นเสร็จสิ้นครบทุกห้องแล้ว!";
 
-        // 3. Render Grid of Rooms
+        // Render Grid
         gridContainer.innerHTML = "";
         document.getElementById('room-grid-title-count').textContent = total;
 
-        activeProj.rooms.forEach(room => {
-            // Filter logic
+        const sortedRooms = [...activeProj.rooms].sort((a, b) => a.roomNo.localeCompare(b.roomNo, undefined, {numeric: true, sensitivity: 'base'}));
+
+        // Sync Bulk Action Bar display
+        const bulkBar = document.getElementById('bulk-actions-bar');
+        if (bulkBar) {
+            if (isBulkMode) {
+                bulkBar.classList.add('active');
+                updateBulkBarUI();
+            } else {
+                bulkBar.classList.remove('active');
+            }
+        }
+
+        sortedRooms.forEach(room => {
             if (roomFilter !== 'all' && room.status !== roomFilter) {
-                return; // skip rendering
+                return;
             }
 
             const roomCard = document.createElement('div');
-            roomCard.className = `room-card status-${room.status}`;
+            const isSelectedForDelete = selectedRoomsForDelete.includes(room.roomNo);
+            roomCard.className = `room-card status-${room.status}${isBulkMode ? ' bulk-selecting' : ''}${isBulkMode && isSelectedForDelete ? ' bulk-selected' : ''}`;
             roomCard.setAttribute('data-room-no', room.roomNo);
             
             let statusText = "รอดำเนินการ";
@@ -576,26 +903,35 @@ document.addEventListener('DOMContentLoaded', () => {
             else if (room.status === 'inspect') statusText = "รอตรวจ";
             else if (room.status === 'completed') statusText = "เสร็จสิ้น";
             else if (room.status === 'issue') statusText = "มีปัญหา";
+            else if (room.status === 'skipped') statusText = "ข้ามงาน";
 
             roomCard.innerHTML = `
                 <span>${room.roomNo}</span>
                 <span class="room-card-status">${statusText}</span>
             `;
 
-            // Hover tooltip details
             let tooltip = `เลขห้อง: ${room.roomNo}\nสถานะ: ${statusText}`;
             if (room.worker) tooltip += `\nผู้ทำงาน: ${room.worker}`;
             if (room.lastUpdated) tooltip += `\nอัปเดตเมื่อ: ${room.lastUpdated}`;
             if (room.note) tooltip += `\nบันทึก: ${room.note}`;
             roomCard.title = tooltip;
 
-            // Click room grid to edit details
             roomCard.addEventListener('click', () => {
-                // Highlight visual select
-                document.querySelectorAll('.room-card').forEach(c => c.classList.remove('selected'));
-                roomCard.classList.add('selected');
-                
-                openRoomManager(activeProj.id, room.roomNo);
+                if (isBulkMode) {
+                    const idx = selectedRoomsForDelete.indexOf(room.roomNo);
+                    if (idx > -1) {
+                        selectedRoomsForDelete.splice(idx, 1);
+                        roomCard.classList.remove('bulk-selected');
+                    } else {
+                        selectedRoomsForDelete.push(room.roomNo);
+                        roomCard.classList.add('bulk-selected');
+                    }
+                    updateBulkBarUI();
+                } else {
+                    document.querySelectorAll('.room-card').forEach(c => c.classList.remove('selected'));
+                    roomCard.classList.add('selected');
+                    openRoomManager(activeProj.id, room.roomNo);
+                }
             });
 
             gridContainer.appendChild(roomCard);
@@ -622,93 +958,417 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // RENDER TAB 3: Daily Activity Log
-    function renderDailyTab() {
-        const formSelect = document.getElementById('log-project');
-        const feedContainer = document.getElementById('daily-activity-feed');
-        
-        // 1. Populate log-form project selection
-        formSelect.innerHTML = `<option value="" disabled selected>-- เลือกโครงการ --</option>`;
-        db.projects.forEach(p => {
-            const opt = document.createElement('option');
-            opt.value = p.id;
-            opt.textContent = p.name;
-            formSelect.appendChild(opt);
-        });
-
-        // 2. Clear & Render Logs
-        feedContainer.innerHTML = "";
-        
-        const filterDateVal = document.getElementById('filter-log-date').value;
-        let filteredLogs = db.logs;
-        
-        if (filterDateVal) {
-            filteredLogs = db.logs.filter(l => l.date === filterDateVal);
+    // Helper to update bulk delete actions bar details
+    function updateBulkBarUI() {
+        const info = document.getElementById('bulk-actions-info');
+        const btnDelete = document.getElementById('btn-bulk-delete-confirm');
+        if (info) {
+            info.textContent = `เลือกห้องพักเพื่อลบ... (เลือกแล้ว ${selectedRoomsForDelete.length} ห้อง)`;
         }
-
-        // Sort descending by date and time
-        filteredLogs.sort((a, b) => {
-            const valA = `${a.date}T${a.time || '00:00'}`;
-            const valB = `${b.date}T${b.time || '00:00'}`;
-            return valB.localeCompare(valA);
-        });
-
-        if (filteredLogs.length === 0) {
-            feedContainer.innerHTML = `<div style="text-align: center; color: var(--text-muted); padding: 40px 0;">ไม่มีรายงานการทำงานในวันที่ระบุ</div>`;
-            return;
+        if (btnDelete) {
+            btnDelete.disabled = selectedRoomsForDelete.length === 0;
+            btnDelete.textContent = `ลบห้องที่เลือก (${selectedRoomsForDelete.length})`;
         }
+    }
 
-        filteredLogs.forEach(log => {
-            const li = document.createElement('div');
-            li.className = `activity-item act-${log.status}`;
-
-            let typeText = "งานปูพื้นทั่วไป";
-            if (log.type === "inspect") typeText = "ตรวจรับงานปูพื้น";
-            else if (log.type === "fix") typeText = "แก้ไขงานปูพื้น";
-
-            let statusBadgeClass = "pending";
-            let statusText = "อยู่ระหว่างดำเนินงาน";
-            if (log.status === "completed") { statusBadgeClass = "completed"; statusText = "ผ่านการตรวจสอบ"; }
-            else if (log.status === "inspect") { statusBadgeClass = "inspect"; statusText = "รอกรรมการตรวจ"; }
-            else if (log.status === "delayed") { statusBadgeClass = "issue"; statusText = "ติดปัญหาล่าช้า"; }
-
-            // Date format display
-            const dParts = log.date.split('-');
-            const displayDate = dParts.length === 3 ? `${dParts[2]}/${dParts[1]}/${parseInt(dParts[0])+543}` : log.date;
-
-            li.innerHTML = `
-                <div class="activity-details">
-                    <span class="activity-title">${log.worker} • ห้อง ${log.roomNo}</span>
-                    <span class="activity-subtitle">${log.projectName} | ${typeText}</span>
-                    ${log.issue ? `<div class="activity-issue-text"><strong>เหตุขัดข้อง:</strong> ${log.issue}</div>` : ''}
-                </div>
-                <div class="activity-meta">
-                    <span class="status-badge ${statusBadgeClass}">${statusText}</span>
-                    <span class="activity-time">${displayDate} ${log.time || ''} น.</span>
-                </div>
-            `;
-            feedContainer.appendChild(li);
+    // Bind bulk delete controls in Room Tab
+    const btnBulkModeTrigger = document.getElementById('btn-bulk-mode-trigger');
+    if (btnBulkModeTrigger) {
+        btnBulkModeTrigger.addEventListener('click', () => {
+            isBulkMode = true;
+            selectedRoomsForDelete = [];
+            renderRoomsTab();
         });
     }
 
-    // Handle Log status input change to display/hide delayed details
-    document.getElementById('log-status').addEventListener('change', (e) => {
-        const delayGroup = document.getElementById('log-delay-reason-group');
-        if (e.target.value === 'delayed') {
-            delayGroup.style.display = 'flex';
-            document.getElementById('log-delay-reason').setAttribute('required', 'true');
-        } else {
-            delayGroup.style.display = 'none';
-            document.getElementById('log-delay-reason').removeAttribute('required');
-        }
-    });
+    const btnBulkCancel = document.getElementById('btn-bulk-cancel');
+    if (btnBulkCancel) {
+        btnBulkCancel.addEventListener('click', () => {
+            isBulkMode = false;
+            selectedRoomsForDelete = [];
+            renderRoomsTab();
+        });
+    }
 
-    // Handle daily logs list date filter
-    document.getElementById('filter-log-date').addEventListener('change', renderDailyTab);
-    document.getElementById('btn-clear-date-filter').addEventListener('click', () => {
-        document.getElementById('filter-log-date').value = "";
-        renderDailyTab();
-    });
+    const btnBulkSelectAll = document.getElementById('btn-bulk-select-all');
+    if (btnBulkSelectAll) {
+        btnBulkSelectAll.addEventListener('click', () => {
+            const activeProj = db.projects.find(p => p.id === selectedProjectId);
+            if (!activeProj) return;
+
+            // Select all rooms currently displayed matching the active filters
+            const visibleRooms = activeProj.rooms.filter(room => {
+                return roomFilter === 'all' || room.status === roomFilter;
+            });
+            selectedRoomsForDelete = visibleRooms.map(r => r.roomNo);
+            
+            // Add bulk-selected styling to all visible cards
+            document.querySelectorAll('.room-card').forEach(card => {
+                card.classList.add('bulk-selected');
+            });
+            updateBulkBarUI();
+        });
+    }
+
+    const btnBulkDeleteConfirm = document.getElementById('btn-bulk-delete-confirm');
+    if (btnBulkDeleteConfirm) {
+        btnBulkDeleteConfirm.addEventListener('click', () => {
+            if (selectedRoomsForDelete.length === 0) {
+                alert("กรุณาเลือกห้องพักอย่างน้อย 1 ห้องเพื่อดำเนินการลบ");
+                return;
+            }
+
+            const activeProj = db.projects.find(p => p.id === selectedProjectId);
+            if (!activeProj) return;
+
+            if (confirm(`คุณแน่ใจว่าต้องการลบห้องพักที่เลือกทั้งหมดจำนวน ${selectedRoomsForDelete.length} ห้อง ออกจากโครงการ "${activeProj.name}" ใช่หรือไม่? การลบนี้จะมีผลถาวร`)) {
+                // Delete selected rooms
+                activeProj.rooms = activeProj.rooms.filter(r => !selectedRoomsForDelete.includes(r.roomNo));
+                activeProj.totalRooms = activeProj.rooms.length;
+
+                // Add log entry
+                const todayStr = getLocalDateStr();
+                const currentTimeStr = new Date().toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit', hour12: false });
+                db.logs.push({
+                    id: `log-${Date.now()}`,
+                    date: todayStr,
+                    time: currentTimeStr,
+                    worker: "ระบบจัดการข้อมูล",
+                    projectId: activeProj.id,
+                    projectName: activeProj.name,
+                    note: `ดำเนินการลบห้องพักแบบกลุ่ม (Bulk Delete) จำนวน ${selectedRoomsForDelete.length} ห้อง (${selectedRoomsForDelete.sort().join(', ')})`
+                });
+
+                // Clear states
+                isBulkMode = false;
+                selectedRoomsForDelete = [];
+
+                saveDB();
+                alert("ดำเนินการลบห้องพักเสร็จสิ้นเรียบร้อยแล้ว!");
+            }
+        });
+    }
+
+    // Bind log period filter selector in Daily Tab
+    const logPeriodFilter = document.getElementById('filter-log-period');
+    if (logPeriodFilter) {
+        logPeriodFilter.addEventListener('change', () => {
+            renderDailyTab();
+        });
+    }
+
+    // Helper to get/initialize attendance state for a project on a specific date
+    let dailyAttendanceState = {};
+    let cardSelectedDates = {};
+
+    function getProjectDateState(projId, dateStr) {
+        const key = `${projId}_${dateStr}`;
+        if (!dailyAttendanceState[key]) {
+            // Find existing logs for this project and date
+            const existingLogs = db.logs.filter(l => l && l.projectId === projId && l.date === dateStr);
+            dailyAttendanceState[key] = existingLogs.map(l => ({
+                workerName: l.worker,
+                note: l.note
+            }));
+        }
+        return dailyAttendanceState[key];
+    }
+
+    // RENDER TAB 3: Daily Attendance/Operations Log (Project-centric layout)
+    function renderDailyTab() {
+        const container = document.getElementById('daily-projects-list');
+        if (!container) return;
+        container.innerHTML = "";
+
+        if (db.projects.length === 0) {
+            container.innerHTML = `<div style="text-align: center; color: var(--text-muted); padding: 40px 0;">โปรดเพิ่มโครงการในแท็บ "แผนงานโปรเจ็กต์" ก่อน</div>`;
+            return;
+        }
+
+        // Safeguard db.workers array
+        if (!db.workers || !Array.isArray(db.workers)) {
+            db.workers = [
+                "สมพงษ์ แก้วมี",
+                "ช่างมานะ",
+                "ช่างวิชัย",
+                "ชาตรี ดีเลิศ",
+                "วิชัย ไกลทอง",
+                "มานะ อดทน"
+            ];
+        }
+
+        // Fetch Selected Period
+        const periodEl = document.getElementById('filter-log-period');
+        const period = periodEl ? periodEl.value : 'all';
+        const todayStr = getLocalDateStr();
+
+        db.projects.forEach(proj => {
+            // 1. Select a Date first for this project card
+            if (!cardSelectedDates[proj.id]) {
+                cardSelectedDates[proj.id] = todayStr;
+            }
+            const activeDate = cardSelectedDates[proj.id];
+
+            // 2. Fetch Selected Workers State for this project & date
+            const activeWorkersState = getProjectDateState(proj.id, activeDate);
+
+            // 3. Worker Selection Pool Badges
+            const poolHTML = db.workers.map(workerName => {
+                const isSelected = activeWorkersState.some(w => w.workerName === workerName);
+                return `
+                    <div class="pool-worker-badge${isSelected ? ' selected' : ''}" data-proj-id="${proj.id}" data-date="${activeDate}" data-name="${workerName}">
+                        ${workerName}
+                    </div>
+                `;
+            }).join('');
+
+            // 4. Worker Note Rows
+            const workerNotesHTML = activeWorkersState.map(w => {
+                return `
+                    <div class="worker-detail-row">
+                        <span class="worker-name-label">👤 ${w.workerName}:</span>
+                        <input type="text" class="form-control worker-task-input" data-proj-id="${proj.id}" data-date="${activeDate}" data-name="${w.workerName}" placeholder="ระบุการปฏิบัติงาน..." value="${w.note || ''}">
+                    </div>
+                `;
+            }).join('');
+
+            // 5. History Logs (Filter logs belonging to THIS project and fitting the date period)
+            let filteredLogs = db.logs.filter(l => l && l.projectId === proj.id);
+
+            if (period === 'today') {
+                filteredLogs = filteredLogs.filter(l => l.date === todayStr);
+            } else if (period === 'week') {
+                const sevenDaysAgo = new Date();
+                sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+                const sevenDaysAgoStr = sevenDaysAgo.toISOString().split('T')[0];
+                filteredLogs = filteredLogs.filter(l => l.date >= sevenDaysAgoStr && l.date <= todayStr);
+            } else if (period === 'month') {
+                const currentYearMonth = todayStr.substring(0, 7);
+                filteredLogs = filteredLogs.filter(l => l.date.startsWith(currentYearMonth));
+            }
+
+            // Group filteredLogs by date
+            const logsByDate = {};
+            filteredLogs.forEach(log => {
+                if (log && log.date) {
+                    if (!logsByDate[log.date]) {
+                        logsByDate[log.date] = [];
+                    }
+                    logsByDate[log.date].push(log);
+                }
+            });
+
+            // Sort dates descending
+            const sortedDates = Object.keys(logsByDate).sort((a, b) => b.localeCompare(a));
+
+            // Generate grouped logs HTML
+            const groupedLogsHTML = sortedDates.map(dateStr => {
+                const dParts = dateStr.split('-');
+                const displayDate = dParts.length === 3 ? `${dParts[2]}/${dParts[1]}/${parseInt(dParts[0])+543}` : dateStr;
+                const logsForDate = logsByDate[dateStr];
+                
+                // Sort logs inside the same date by time descending
+                logsForDate.sort((a, b) => (b.time || '00:00').localeCompare(a.time || '00:00'));
+
+                const logsHTML = logsForDate.map(log => `
+                    <div class="activity-item" style="border-left: 4px solid var(--accent); margin-bottom: 8px;">
+                        <div class="activity-details" style="width: 100%;">
+                            <div style="display:flex; justify-content:space-between; align-items:center;">
+                                <span style="font-weight:700; color:var(--text-primary);">👤 ช่างผู้ทำ: ${log.worker || 'ไม่ระบุชื่อ'}</span>
+                                <span class="activity-time" style="display:flex; align-items:center; gap:8px;">
+                                    ${log.time || ''} น.
+                                    <button class="btn-delete-log" data-log-id="${log.id}" title="ลบประวัตินี้" style="background:none; border:none; color:var(--color-issue); cursor:pointer; font-size:16px; font-weight:bold;">&times;</button>
+                                </span>
+                            </div>
+                            <div class="activity-issue-text" style="width:100%; display:block; padding:8px; margin-top:6px; background:#ffffff; border:1px solid #e2e8f0; border-radius:4px;">
+                                ${(log.note || 'เข้าปฏิบัติงานประจำวัน').replace(/\n/g, '<br>')}
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+
+                return `
+                    <div style="width: 100%;">
+                        <div class="log-date-header">📅 วันที่ ${displayDate}</div>
+                        <div class="log-date-items">
+                            ${logsHTML}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            // Create Project Card for Tab 3
+            const pCard = document.createElement('div');
+            pCard.className = "daily-project-card";
+
+            pCard.innerHTML = `
+                <div class="daily-project-header">
+                    <span class="daily-project-title">${proj.name}</span>
+                </div>
+
+                <div style="display:flex; align-items:center; gap:8px; margin-bottom: 16px;">
+                    <label style="font-size:13px; font-weight:600; color:var(--text-secondary);">📅 เลือกวันที่เพื่อบันทึกงาน:</label>
+                    <input type="date" class="form-control log-date-picker" data-proj-id="${proj.id}" value="${activeDate}" style="padding: 6px 12px; font-size: 13px; width: 160px; border-color: var(--accent);">
+                </div>
+                
+                <div class="daily-project-workers-box">
+                    <label class="daily-project-workers-label">👷 เลือกคนงานเข้าปฏิบัติงาน (คลิกเพื่อเลือก/ยกเลิก):</label>
+                    <div class="workers-pool-container">
+                        ${poolHTML}
+                    </div>
+
+                    <div class="add-worker-row" style="margin-top: 12px; margin-bottom: 12px;">
+                        <input type="text" class="form-control inline-worker-input" placeholder="เพิ่มคนงานใหม่ลงบอร์ด..." style="flex-grow:1; padding: 6px 12px; font-size: 13px;">
+                        <button type="button" class="btn btn-sm btn-primary btn-add-worker-inline">เพิ่มคนงาน</button>
+                    </div>
+
+                    <label class="daily-project-workers-label" style="margin-top: 16px;">✍️ กรอกรายละเอียดการปฏิบัติงานของคนงานแต่ละคน:</label>
+                    <div class="worker-details-list">
+                        ${workerNotesHTML}
+                        ${activeWorkersState.length === 0 ? '<span style="font-size:13px; color:var(--text-muted); display:inline-block; padding: 4px 0;">ไม่มีคนงานที่เลือกสำหรับวันที่ระบุ</span>' : ''}
+                    </div>
+
+                    <button type="button" class="btn btn-primary btn-save-daily-state" style="width:100%; margin-top:12px; display:flex; justify-content:center; font-weight:600;">
+                        💾 บันทึกรายงานความคืบหน้ารายวัน
+                    </button>
+                </div>
+
+                <div style="font-size: 13px; font-weight: 600; color: var(--text-secondary); margin-bottom: 4px; margin-top: 20px; border-top: 1px solid var(--border-color); padding-top: 16px;">
+                    ประวัติรายงานบันทึกความคืบหน้าเรียงตามวัน (${filteredLogs.length} รายการ):
+                </div>
+
+                <div class="activity-feed-container" style="gap:5px;">
+                    ${groupedLogsHTML}
+                    ${filteredLogs.length === 0 ? `<div style="text-align:center; padding:20px; color:var(--text-muted); font-size:13px;">ไม่มีรายงานความคืบหน้าสำหรับช่วงเวลานี้</div>` : ''}
+                </div>
+            `;
+
+            // Bind Date Selector change
+            const datePicker = pCard.querySelector('.log-date-picker');
+            if (datePicker) {
+                datePicker.addEventListener('change', (e) => {
+                    cardSelectedDates[proj.id] = e.target.value;
+                    renderDailyTab();
+                });
+            }
+
+            // Bind Pool Worker badge click
+            pCard.querySelectorAll('.pool-worker-badge').forEach(badge => {
+                badge.addEventListener('click', () => {
+                    const projId = badge.getAttribute('data-proj-id');
+                    const dateStr = badge.getAttribute('data-date');
+                    const workerName = badge.getAttribute('data-name');
+                    
+                    const state = getProjectDateState(projId, dateStr);
+                    const idx = state.findIndex(w => w.workerName === workerName);
+                    if (idx > -1) {
+                        state.splice(idx, 1);
+                    } else {
+                        state.push({ workerName, note: "" });
+                    }
+                    renderDailyTab();
+                });
+            });
+
+            // Bind Worker Task notes input
+            pCard.querySelectorAll('.worker-task-input').forEach(input => {
+                input.addEventListener('input', (e) => {
+                    const projId = input.getAttribute('data-proj-id');
+                    const dateStr = input.getAttribute('data-date');
+                    const workerName = input.getAttribute('data-name');
+                    const val = e.target.value;
+                    
+                    const state = getProjectDateState(projId, dateStr);
+                    const item = state.find(w => w.workerName === workerName);
+                    if (item) {
+                        item.note = val;
+                    }
+                });
+            });
+
+            // Bind Add Worker Inline
+            const addWorkerBtn = pCard.querySelector('.btn-add-worker-inline');
+            const addWorkerInput = pCard.querySelector('.inline-worker-input');
+
+            const addWorkerFunc = () => {
+                if (!addWorkerInput) return;
+                const nameToAdd = addWorkerInput.value.trim();
+                if (!nameToAdd) return;
+                
+                if (!db.workers.includes(nameToAdd)) {
+                    db.workers.push(nameToAdd);
+                    const state = getProjectDateState(proj.id, activeDate);
+                    if (!state.some(w => w.workerName === nameToAdd)) {
+                        state.push({ workerName: nameToAdd, note: "" });
+                    }
+                    saveDB(false);
+                    renderDailyTab();
+                } else {
+                    const state = getProjectDateState(proj.id, activeDate);
+                    if (!state.some(w => w.workerName === nameToAdd)) {
+                        state.push({ workerName: nameToAdd, note: "" });
+                        renderDailyTab();
+                    } else {
+                        alert(`พนักงานชื่อ "${nameToAdd}" ได้รับการเพิ่มแล้ว`);
+                    }
+                }
+                addWorkerInput.value = "";
+            };
+
+            if (addWorkerBtn && addWorkerInput) {
+                addWorkerBtn.addEventListener('click', addWorkerFunc);
+                addWorkerInput.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        addWorkerFunc();
+                    }
+                });
+            }
+
+            // Bind Save Button click
+            const saveBtn = pCard.querySelector('.btn-save-daily-state');
+            saveBtn.addEventListener('click', () => {
+                const state = getProjectDateState(proj.id, activeDate);
+                
+                // Clear existing logs for this project and date
+                db.logs = db.logs.filter(l => !(l.projectId === proj.id && l.date === activeDate));
+                
+                // Push new logs
+                const currentTimeStr = new Date().toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit', hour12: false });
+                state.forEach(w => {
+                    db.logs.push({
+                        id: `log-${Date.now()}-${Math.random()}`,
+                        date: activeDate,
+                        time: currentTimeStr,
+                        worker: w.workerName,
+                        projectId: proj.id,
+                        projectName: proj.name,
+                        note: w.note || "เข้าปฏิบัติงานประจำวัน"
+                    });
+                });
+
+                // Sync project's todayWorkers list if date is today
+                if (activeDate === todayStr) {
+                    proj.todayWorkers = state.map(w => w.workerName).join(', ');
+                }
+
+                saveDB();
+                alert(`บันทึกรายงานการทำงานของโครงการ "${proj.name}" วันที่ ${activeDate} เรียบร้อยแล้ว!`);
+            });
+
+            // Log Deletion bind
+            pCard.querySelectorAll('.btn-delete-log').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const logId = btn.getAttribute('data-log-id');
+                    if (confirm("ต้องการลบรายงานความคืบหน้าของโครงการนี้ใช่หรือไม่?")) {
+                        deleteDailyLog(logId);
+                    }
+                });
+            });
+
+            container.appendChild(pCard);
+        });
+    }
 
     // RENDER TAB 4: Issues Tracker
     function renderIssuesTab() {
@@ -728,7 +1388,6 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Sort: pending first, then date descending
         const sortedIssues = [...db.issues].sort((a,b) => {
             if (a.status === b.status) {
                 return b.date.localeCompare(a.date);
@@ -743,7 +1402,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const badgeText = issue.status === 'pending' ? 'พบปัญหาล่าช้า' : 'แก้ไขเสร็จสิ้น';
             const badgeClass = issue.status === 'pending' ? 'issue' : 'completed';
 
-            // Thai Date format
             const repParts = issue.date.split('-');
             const displayRepDate = repParts.length === 3 ? `${repParts[2]}/${repParts[1]}/${parseInt(repParts[0])+543}` : issue.date;
             
@@ -759,7 +1417,10 @@ document.addEventListener('DOMContentLoaded', () => {
                         <div class="issue-card-title">${issue.projectName} — ห้อง ${issue.roomNo}</div>
                         <div class="issue-card-meta">แจ้งโดย: ${issue.reportedBy} | เมื่อ: ${displayRepDate}</div>
                     </div>
-                    <span class="status-badge ${badgeClass}">${badgeText}</span>
+                    <div style="display:flex; align-items:center; gap:8px;">
+                        <span class="status-badge ${badgeClass}">${badgeText}</span>
+                        <button class="btn-delete-issue-card" data-id="${issue.id}" title="ลบรายการปัญหานี้" style="background:none; border:none; color:var(--text-secondary); cursor:pointer; font-size:18px; font-weight:bold;">&times;</button>
+                    </div>
                 </div>
                 <div class="issue-card-body">
                     <strong>รายละเอียดปัญหา:</strong> ${issue.desc}
@@ -779,13 +1440,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 ` : ''}
             `;
 
-            // Action button bind
             const btnResolve = card.querySelector('.btn-resolve-issue');
             if (btnResolve) {
                 btnResolve.addEventListener('click', () => {
                     openIssueResolver(issue.id);
                 });
             }
+
+            card.querySelector('.btn-delete-issue-card').addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (confirm("ต้องการลบสถิติจดบันทึกปัญหานี้ออกจากระบบใช่หรือไม่?")) {
+                    deleteIssue(issue.id);
+                }
+            });
 
             container.appendChild(card);
         });
@@ -857,58 +1524,202 @@ document.addEventListener('DOMContentLoaded', () => {
     // 4. Operations / Action Modals Forms Logic
     // ==========================================
 
-    // Action A: Delete Project
+    function deleteDailyLog(logId) {
+        const log = db.logs.find(l => l.id === logId);
+        if (log) {
+            const key = `${log.projectId}_${log.date}`;
+            if (dailyAttendanceState[key]) {
+                dailyAttendanceState[key] = dailyAttendanceState[key].filter(w => w.workerName !== log.worker);
+            }
+        }
+        db.logs = db.logs.filter(l => l.id !== logId);
+        saveDB();
+    }
+
+    function deleteIssue(issueId) {
+        db.issues = db.issues.filter(i => i.id !== issueId);
+        saveDB();
+    }
+
     function deleteProject(projId) {
         db.projects = db.projects.filter(p => p.id !== projId);
-        // Clean corresponding logs/issues too
         db.logs = db.logs.filter(l => l.projectId !== projId);
         db.issues = db.issues.filter(i => i.projectId !== projId);
         
-        // Reset selections
         if (selectedProjectId === projId) {
             selectedProjectId = db.projects.length > 0 ? db.projects[0].id : "";
         }
         saveDB();
     }
 
-    // Action B: Add Project Submit
+    // Action: Add Project Submit
     document.getElementById('form-add-project').addEventListener('submit', (e) => {
         e.preventDefault();
         
         const name = document.getElementById('project-name').value;
         const totalRooms = parseInt(document.getElementById('project-total-rooms').value);
-        const startMonth = parseInt(document.getElementById('project-start-month').value);
-        const endMonth = parseInt(document.getElementById('project-end-month').value);
-        const dueDate = document.getElementById('project-due-date').value;
+        const startDate = getDateStringFromDropdowns('project-start-day', 'project-start-month', 'project-start-year');
+        const endDate = getDateStringFromDropdowns('project-end-day', 'project-end-month', 'project-end-year');
 
-        if (startMonth > endMonth) {
-            alert("คำเตือน: เดือนเริ่มต้นต้องไม่ระบุทีหลังเดือนสิ้นสุดโครงการ");
+        if (startDate > endDate) {
+            alert("ข้อผิดพลาด: วันเริ่มต้นต้องไม่ระบุทีหลังวันที่สิ้นสุดโครงการ");
             return;
         }
+
+        // Calculate months
+        const startMonth = new Date(startDate).getMonth() + 1;
+        const endMonth = new Date(endDate).getMonth() + 1;
 
         const newId = `proj-${Date.now()}`;
         const newProj = {
             id: newId,
             name: name,
+            startDate: startDate,
+            endDate: endDate,
             startMonth: startMonth,
             endMonth: endMonth,
-            dueDate: dueDate,
+            dueDate: endDate,
             totalRooms: totalRooms,
+            todayWorkers: "",
             rooms: generateRoomList(totalRooms)
         };
 
         db.projects.push(newProj);
         selectedProjectId = newId;
 
-        // Reset Form & Close
         e.target.reset();
+        setTodayDates(); // Reset dropdowns to today
         closeModal('modal-add-project');
-        
-        // Save & Redraw
         saveDB();
     });
 
-    // Action C: Open Room Manager Modal
+    // Action: Open Edit Project Modal
+    function openEditProjectModal(projId) {
+        const proj = db.projects.find(p => p.id === projId);
+        if (!proj) return;
+
+        document.getElementById('edit-project-id').value = proj.id;
+        document.getElementById('edit-project-name').value = proj.name;
+        document.getElementById('edit-project-total-rooms').value = proj.rooms ? proj.rooms.length : proj.totalRooms;
+        
+        // Populate edit date dropdowns from existing Western date string
+        setDropdownsFromDateString(proj.startDate, 'edit-project-start-day', 'edit-project-start-month', 'edit-project-start-year');
+        setDropdownsFromDateString(proj.endDate, 'edit-project-end-day', 'edit-project-end-month', 'edit-project-end-year');
+
+        openModal('modal-edit-project');
+    }
+
+    document.getElementById('btn-edit-current-project').addEventListener('click', () => {
+        if (selectedProjectId) {
+            openEditProjectModal(selectedProjectId);
+        }
+    });
+
+    // Action: Edit Project Submit
+    document.getElementById('form-edit-project').addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        const projId = document.getElementById('edit-project-id').value;
+        const name = document.getElementById('edit-project-name').value;
+        const newTotal = parseInt(document.getElementById('edit-project-total-rooms').value);
+        const startDate = getDateStringFromDropdowns('edit-project-start-day', 'edit-project-start-month', 'edit-project-start-year');
+        const endDate = getDateStringFromDropdowns('edit-project-end-day', 'edit-project-end-month', 'edit-project-end-year');
+
+        if (startDate > endDate) {
+            alert("ข้อผิดพลาด: วันเริ่มต้นต้องไม่ระบุทีหลังวันที่สิ้นสุดโครงการ");
+            return;
+        }
+
+        if (newTotal < 1) {
+            alert("ข้อผิดพลาด: จำนวนห้องต้องไม่ต่ำกว่า 1 ห้อง");
+            return;
+        }
+
+        const proj = db.projects.find(p => p.id === projId);
+        if (proj) {
+            proj.name = name;
+            proj.startDate = startDate;
+            proj.endDate = endDate;
+            proj.dueDate = endDate;
+            
+            // Extract start/end month indexes for Gantt
+            proj.startMonth = new Date(startDate).getMonth() + 1;
+            proj.endMonth = new Date(endDate).getMonth() + 1;
+            
+            // Adjust rooms count list
+            const currentCount = proj.rooms.length;
+            if (newTotal > currentCount) {
+                // Generate potential room list
+                const potentialRooms = generateRoomList(newTotal);
+                potentialRooms.forEach(r => {
+                    if (!proj.rooms.some(existing => existing.roomNo === r.roomNo)) {
+                        proj.rooms.push(r);
+                    }
+                });
+                // Dynamic fallback if naming is irregular
+                while (proj.rooms.length < newTotal) {
+                    const nextNo = proj.rooms.length + 101;
+                    proj.rooms.push({ roomNo: String(nextNo), status: 'pending', worker: '', note: '', lastUpdated: getLocalDateStr() });
+                }
+            } else if (newTotal < currentCount) {
+                // Warning note was in confirmation, now slice last rooms
+                proj.rooms = proj.rooms.slice(0, newTotal);
+            }
+            proj.totalRooms = proj.rooms.length;
+            
+            db.logs.forEach(l => {
+                if (l.projectId === projId) l.projectName = name;
+            });
+            db.issues.forEach(i => {
+                if (i.projectId === projId) i.projectName = name;
+            });
+
+            closeModal('modal-edit-project');
+            saveDB();
+            alert("อัปเดตรายละเอียดโปรเจ็กต์เรียบร้อย!");
+        }
+    });
+
+    // Action: Open Add Room Modal Trigger
+    document.getElementById('btn-add-room-trigger').addEventListener('click', () => {
+        if (selectedProjectId) {
+            openModal('modal-add-room');
+        }
+    });
+
+    // Action: Add Room Submit
+    document.getElementById('form-add-room').addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        const roomNo = document.getElementById('add-room-no').value.trim();
+        const status = document.getElementById('add-room-status').value;
+
+        const proj = db.projects.find(p => p.id === selectedProjectId);
+        if (!proj) return;
+
+        const duplicate = proj.rooms.some(r => r.roomNo === roomNo);
+        if (duplicate) {
+            alert(`เกิดข้อผิดพลาด: เลขห้อง ${roomNo} มีอยู่แล้วในโปรเจ็กต์นี้`);
+            return;
+        }
+
+        proj.rooms.push({
+            roomNo: roomNo,
+            status: status,
+            worker: '',
+            note: 'สร้างห้องเพิ่มเติมโดยผู้ใช้งาน',
+            lastUpdated: getLocalDateStr()
+        });
+        
+        proj.totalRooms = proj.rooms.length;
+
+        e.target.reset();
+        closeModal('modal-add-room');
+        saveDB();
+        alert(`เพิ่มห้องพัก ${roomNo} เรียบร้อย!`);
+    });
+
+    // Action: Open Room Manager Modal
     function openRoomManager(projectId, roomNo) {
         const proj = db.projects.find(p => p.id === projectId);
         if (!proj) return;
@@ -916,7 +1727,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const room = proj.rooms.find(r => r.roomNo === roomNo);
         if (!room) return;
 
-        // Set inputs fields values
         document.getElementById('room-manage-project-id').value = projectId;
         document.getElementById('room-manage-room-no').value = roomNo;
         document.getElementById('room-manager-title').textContent = `${proj.name} — จัดการห้อง ${roomNo}`;
@@ -924,14 +1734,12 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('room-manage-worker').value = room.worker || "";
         document.getElementById('room-manage-note').value = room.note || "";
         
-        // Handle issue panel presentation
         const issuePanel = document.getElementById('room-manage-issue-panel');
         const issueDescInput = document.getElementById('room-manage-issue-desc');
         
         issueDescInput.value = "";
         if (room.status === 'issue') {
             issuePanel.style.display = 'block';
-            // Pre-fill with existing issue if exists
             const relatedIssue = db.issues.find(i => i.projectId === projectId && i.roomNo === roomNo && i.status === 'pending');
             if (relatedIssue) {
                 issueDescInput.value = relatedIssue.desc;
@@ -939,6 +1747,21 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             issuePanel.style.display = 'none';
         }
+
+        const btnDeleteRoom = document.getElementById('btn-delete-room');
+        const newBtnDeleteRoom = btnDeleteRoom.cloneNode(true);
+        btnDeleteRoom.parentNode.replaceChild(newBtnDeleteRoom, btnDeleteRoom);
+
+        newBtnDeleteRoom.addEventListener('click', () => {
+            if (confirm(`คุณต้องการลบ "ห้องพัก ${roomNo}" ออกจากโครงการ "${proj.name}" ใช่หรือไม่?`)) {
+                proj.rooms = proj.rooms.filter(r => r.roomNo !== roomNo);
+                proj.totalRooms = proj.rooms.length;
+                
+                closeModal('modal-room-manager');
+                saveDB();
+                alert(`ลบห้องพัก ${roomNo} เรียบร้อยแล้ว`);
+            }
+        });
 
         openModal('modal-room-manager');
     }
@@ -957,7 +1780,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Action D: Update Room Details Submit
+    // Action: Update Room Details Submit
     document.getElementById('form-manage-room').addEventListener('submit', (e) => {
         e.preventDefault();
 
@@ -974,25 +1797,21 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!room) return;
 
         const prevStatus = room.status;
-        const todayStr = new Date().toISOString().split('T')[0];
+        const todayStr = getLocalDateStr();
         const currentTimeStr = new Date().toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit', hour12: false });
 
-        // Apply changes
         room.status = status;
         room.worker = worker;
         room.note = note;
         room.lastUpdated = todayStr;
 
-        // Handle issue lifecycle logic
         if (status === 'issue') {
             const desc = document.getElementById('room-manage-issue-desc').value;
-            // Check if there is already an active issue reported for this room
             const existingIssue = db.issues.find(i => i.projectId === projectId && i.roomNo === roomNo && i.status === 'pending');
             if (existingIssue) {
-                existingIssue.desc = desc; // update
+                existingIssue.desc = desc;
                 existingIssue.reportedBy = worker || "พนักงานควบคุมงาน";
             } else {
-                // Add new issue
                 db.issues.push({
                     id: `issue-${Date.now()}`,
                     projectId: projectId,
@@ -1007,7 +1826,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             }
         } else if (prevStatus === 'issue' && status !== 'issue') {
-            // If they changed status from issue to something else, resolve active issues
             const activeIssues = db.issues.filter(i => i.projectId === projectId && i.roomNo === roomNo && i.status === 'pending');
             activeIssues.forEach(i => {
                 i.status = 'resolved';
@@ -1016,41 +1834,28 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
-        // Add corresponding daily activity record automatically
-        let typeAction = 'lay';
-        if (status === 'inspect') typeAction = 'inspect';
-        else if (status === 'completed') typeAction = 'inspect';
-        else if (status === 'issue') typeAction = 'fix';
-
         db.logs.push({
             id: `log-${Date.now()}`,
             date: todayStr,
             time: currentTimeStr,
-            worker: worker || "ระบบอัพเดทอัตโนมัติ",
+            worker: worker || "ระบบอัปเดตห้องพัก",
             projectId: projectId,
             projectName: proj.name,
-            roomNo: roomNo,
-            type: typeAction,
-            status: status === 'issue' ? 'delayed' : status,
-            issue: status === 'issue' ? document.getElementById('room-manage-issue-desc').value : note
+            note: `อัปเดตสถานะห้อง ${roomNo} เป็น: ${status === 'completed' ? 'เสร็จสิ้น' : status === 'progress' ? 'กำลังปูพื้น' : status === 'inspect' ? 'รอตรวจสอบ' : status === 'issue' ? 'มีปัญหา' : 'ข้ามไม่ต้องปู'} (${note || 'ไม่มีบันทึกเพิ่มเติม'})`
         });
 
-        // Close Modal & Save
         closeModal('modal-room-manager');
         saveDB();
     });
 
-    // Action E: Add Daily Work Log Submit
-    document.getElementById('daily-log-form').addEventListener('submit', (e) => {
+    // Action: Add Daily Work Log Submit (Project-centric daily modal)
+    document.getElementById('form-add-daily-log').addEventListener('submit', (e) => {
         e.preventDefault();
 
-        const worker = document.getElementById('log-worker').value;
-        const projectId = document.getElementById('log-project').value;
-        const roomNo = document.getElementById('log-room').value.trim();
-        const type = document.getElementById('log-type').value;
-        const status = document.getElementById('log-status').value;
-        const delayReason = document.getElementById('log-delay-reason').value;
-        const date = document.getElementById('log-date').value;
+        const projectId = document.getElementById('add-daily-log-project-id').value;
+        const worker = document.getElementById('add-daily-log-worker').value;
+        const note = document.getElementById('add-daily-log-note').value;
+        const date = document.getElementById('add-daily-log-date').value;
         const currentTimeStr = new Date().toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit', hour12: false });
 
         const proj = db.projects.find(p => p.id === projectId);
@@ -1059,27 +1864,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Validate if room exists in selected project
-        let room = proj.rooms.find(r => r.roomNo === roomNo);
-        
-        // If room does not exist (e.g. they typed room 707 and project only has 48 rooms), we ask or just add it dynamically
-        if (!room) {
-            if (confirm(`ไม่พบเลขห้อง ${roomNo} ในข้อมูลดั้งเดิมของโครงการ ต้องการสร้างห้องปูพื้นใหม่นี้เป็นกรณีพิเศษใช่หรือไม่?`)) {
-                room = {
-                    roomNo: roomNo,
-                    status: 'pending',
-                    worker: '',
-                    note: '',
-                    lastUpdated: ''
-                };
-                proj.rooms.push(room);
-                proj.totalRooms = proj.rooms.length; // Increment total rooms count
-            } else {
-                return; // cancel
-            }
-        }
-
-        // 1. Log Activity Record
+        // Push new daily activity log
         db.logs.push({
             id: `log-${Date.now()}`,
             date: date,
@@ -1087,51 +1872,20 @@ document.addEventListener('DOMContentLoaded', () => {
             worker: worker,
             projectId: projectId,
             projectName: proj.name,
-            roomNo: roomNo,
-            type: type,
-            status: status,
-            issue: status === 'delayed' ? delayReason : ''
+            note: note
         });
 
-        // 2. Synchronize status of the Room
-        let syncedRoomStatus = 'progress';
-        if (status === 'completed') syncedRoomStatus = 'completed';
-        else if (status === 'inspect') syncedRoomStatus = 'inspect';
-        else if (status === 'delayed') syncedRoomStatus = 'issue';
+        // Auto-update project's current worker list if they changed it in the modal
+        proj.todayWorkers = worker;
 
-        room.status = syncedRoomStatus;
-        room.worker = worker;
-        room.lastUpdated = date;
-        if (status === 'delayed') {
-            room.note = `ล่าช้า: ${delayReason}`;
-            
-            // Add issue tracking entry
-            db.issues.push({
-                id: `issue-${Date.now()}`,
-                projectId: projectId,
-                projectName: proj.name,
-                roomNo: roomNo,
-                desc: `[รายงานรายวัน] ${delayReason}`,
-                reportedBy: worker,
-                date: date,
-                status: 'pending',
-                solution: '',
-                resolveDate: ''
-            });
-        } else {
-            room.note = `อัปเดตจากรายงานรายวัน (${type === 'lay' ? 'ปูพื้น' : type === 'inspect' ? 'ตรวจงาน' : 'ซ่อมแซม'})`;
-        }
-
-        // Clear Form, Save & Re-render
         e.target.reset();
-        setTodayDates();
-        document.getElementById('log-delay-reason-group').style.display = 'none';
+        closeModal('modal-add-daily-log');
         
         saveDB();
-        alert("บันทึกการรายงานรายวันสำเร็จ!");
+        alert("บันทึกรายงานความคืบหน้าโครงการเสร็จสิ้น!");
     });
 
-    // Action F: Open Issue Resolver Modal
+    // Action: Open Issue Resolver Modal
     function openIssueResolver(issueId) {
         const issue = db.issues.find(i => i.id === issueId);
         if (!issue) return;
@@ -1144,7 +1898,7 @@ document.addEventListener('DOMContentLoaded', () => {
         openModal('modal-issue-manager');
     }
 
-    // Action G: Issue Resolve Submit
+    // Action: Issue Resolve Submit
     document.getElementById('form-resolve-issue').addEventListener('submit', (e) => {
         e.preventDefault();
 
@@ -1155,27 +1909,24 @@ document.addEventListener('DOMContentLoaded', () => {
         const issue = db.issues.find(i => i.id === issueId);
         if (!issue) return;
 
-        const todayStr = new Date().toISOString().split('T')[0];
+        const todayStr = getLocalDateStr();
         const currentTimeStr = new Date().toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit', hour12: false });
 
         issue.status = status;
         issue.solution = solution;
         issue.resolveDate = todayStr;
 
-        // If status is marked resolved, synchronize the room status to 'inspect' (to be checked by inspector)
-        // or keep status as completed if resolved
         if (status === 'resolved') {
             const proj = db.projects.find(p => p.id === issue.projectId);
             if (proj) {
                 const room = proj.rooms.find(r => r.roomNo === issue.roomNo);
                 if (room && room.status === 'issue') {
-                    room.status = 'inspect'; // set to inspect so foreman inspects it
+                    room.status = 'inspect';
                     room.note = `ได้รับการแก้ไข: ${solution}`;
                     room.lastUpdated = todayStr;
                 }
             }
 
-            // Append daily work log log entry
             db.logs.push({
                 id: `log-${Date.now()}`,
                 date: todayStr,
@@ -1183,10 +1934,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 worker: "ระบบแก้ไขปัญหา",
                 projectId: issue.projectId,
                 projectName: issue.projectName,
-                roomNo: issue.roomNo,
-                type: "fix",
-                status: "inspect",
-                issue: `แก้ไขเสร็จสิ้น: ${solution}`
+                note: `แก้ไขปัญหาห้อง ${issue.roomNo} สำเร็จ: ${solution}`
             });
         }
 
@@ -1200,8 +1948,28 @@ document.addEventListener('DOMContentLoaded', () => {
     // 5. Initial Boot & UI bindings
     // ==========================================
     
-    // Boot operations
+    // Initialize date dropdown selectors
+    initDateDropdowns('project-start-day', 'project-start-month', 'project-start-year');
+    initDateDropdowns('project-end-day', 'project-end-month', 'project-end-year');
+    initDateDropdowns('edit-project-start-day', 'edit-project-start-month', 'edit-project-start-year');
+    initDateDropdowns('edit-project-end-day', 'edit-project-end-month', 'edit-project-end-year');
+
     loadDB();
+
+    // Bind timeline view select change and year select change
+    const selectTimelineView = document.getElementById('select-timeline-view');
+    if (selectTimelineView) {
+        selectTimelineView.addEventListener('change', () => {
+            renderPlanTab();
+        });
+    }
+    const selectTimelineYear = document.getElementById('select-timeline-year');
+    if (selectTimelineYear) {
+        selectTimelineYear.addEventListener('change', () => {
+            renderPlanTab();
+        });
+    }
+
     updateDashboardMetrics();
     updatePageHeader();
     setTodayDates();
